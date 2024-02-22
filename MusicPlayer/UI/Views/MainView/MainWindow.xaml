@@ -1,0 +1,60 @@
+﻿<Window x:Class="MusicPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicPlayer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel>
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar>
+                    <Menu>
+                        <MenuItem Header="Menu">
+                            <MenuItem Header="Save"/>
+                            <MenuItem Header="Load"/>
+                            <MenuItem Header="Options"
+                                      Command="{Binding NavigationCommand}"
+                                      CommandParameter="Options"/>
+                            <MenuItem Header="Exit"/>
+                        </MenuItem>
+                    </Menu>
+                </ToolBar>
+                <ToolBar>
+                    <Button Content="Frontpage" 
+                            Command="{Binding NavigationCommand}"
+                            CommandParameter="FrontPage"/>
+                    <Button Content="Playlists" 
+                            Command="{Binding NavigationCommand}"
+                            CommandParameter="Playlist"/>
+                    <Button Content="Songs"
+                            Command="{Binding NavigationCommand}"/>
+                </ToolBar>
+            </ToolBarTray>
+        </DockPanel>
+        
+        
+        <ContentControl Grid.Row="1"
+            x:Name="MainContent"
+            Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}" />
+        
+        <!--<StackPanel Margin="10">
+            <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
+            <WrapPanel HorizontalAlignment="Center">
+                <Button Name="btnPlay" Click="btnPlay_Click">Play</Button>
+                <Button Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
+                <Button Name="btnStop" Click="btnStop_Click">Stop</Button>
+            </WrapPanel>
+        </StackPanel>-->
+        <StackPanel Grid.Row="2">
+            <TextBlock>Status bar</TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

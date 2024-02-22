@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Playlists="clr-namespace:MusicPlayer.UI.Views.Playlists"
+                    xmlns:FronPage="clr-namespace:MusicPlayer.UI.Views.FrontPage"
+                    xmlns:Options="clr-namespace:MusicPlayer.UI.Views.Options"
+                    >
+    <DataTemplate DataType="{x:Type Playlists:PlayListViewModel}">
+        <Playlists:PlaylistView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type FronPage:FrontPageViewModel}">
+        <FronPage:FrontPageView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type Options:OptionsViewModel}">
+        <Options:OptionsView/>
+    </DataTemplate>
+</ResourceDictionary>
