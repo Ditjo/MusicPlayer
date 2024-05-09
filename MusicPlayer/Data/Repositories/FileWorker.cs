@@ -9,9 +9,15 @@ namespace MusicPlayer.Data.Repositories
 {
     internal class FileWorker
     {
+        private string _filePath;
+        public FileWorker(string filePath)
+        {
+            _filePath = filePath;
+        }
+
         public List<string> ReadfilePaths()
         {
-            var files = Directory.GetFiles("../../../MockData");
+            var files = Directory.GetFiles(_filePath);
 
             if(files != null)
                 return files.ToList();

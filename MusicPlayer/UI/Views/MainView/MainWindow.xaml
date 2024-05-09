@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -34,8 +35,8 @@
                     <Button Content="Playlists" 
                             Command="{Binding NavigationCommand}"
                             CommandParameter="Playlist"/>
-                    <Button Content="Songs"
-                            Command="{Binding NavigationCommand}"/>
+                    <!--<Button Content="Songs"
+                            Command="{Binding NavigationCommand}"/>-->
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
@@ -45,16 +46,15 @@
             x:Name="MainContent"
             Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}" />
         
-        <!--<StackPanel Margin="10">
-            <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
-            <WrapPanel HorizontalAlignment="Center">
-                <Button Name="btnPlay" Click="btnPlay_Click">Play</Button>
-                <Button Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
-                <Button Name="btnStop" Click="btnStop_Click">Stop</Button>
-            </WrapPanel>
-        </StackPanel>-->
-        <StackPanel Grid.Row="2">
-            <TextBlock>Status bar</TextBlock>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button Content="Rewind" Command="{Binding RewindMusicCommand}"/>
+            <Button Content="Play" Command="{Binding PlayMusicCommand}"/>
+            <Button Content="Stop" Command="{Binding StopMusicCommand}"/>
+            <Slider Value="{Binding OutputVolume}" 
+                    Minimum="0" 
+                    Maximum="100"
+                    Width="100"></Slider>
+            <TextBlock Text="{Binding OutputVolume}" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>
