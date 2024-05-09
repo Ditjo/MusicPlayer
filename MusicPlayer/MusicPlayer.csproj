@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Styles\" />
-    <Folder Include="Data\Models\" />
     <Folder Include="UI\Components\" />
   </ItemGroup>
 

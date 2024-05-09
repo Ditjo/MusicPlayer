@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicPlayer.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,21 @@ namespace MusicPlayer.Data.Repositories
             if(files != null)
                 return files.ToList();
             return new();
+        }
+
+        public List<Song> ReadSongs()
+        {
+            List<Song> list = new List<Song>();
+            var files = Directory.GetFiles(_filePath);
+
+            foreach(var song in files)
+            {
+                list.Add(new Song
+                {
+                    Url = song,
+                });
+            }
+            return list;
         }
     }
 }
