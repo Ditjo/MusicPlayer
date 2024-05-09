@@ -48,8 +48,11 @@
         
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
             <Button Content="Rewind" Command="{Binding RewindMusicCommand}"/>
+            <Button Content="&lt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>
             <Button Content="Play" Command="{Binding PlayMusicCommand}"/>
             <Button Content="Stop" Command="{Binding StopMusicCommand}"/>
+            <Button Content="&gt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5"/>
+            
             <Slider Value="{Binding OutputVolume}" 
                     Minimum="0" 
                     Maximum="100"

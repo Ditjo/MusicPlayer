@@ -27,6 +27,7 @@ namespace MusicPlayer.UI.Views.MainView
         public ICommand PlayMusicCommand { get; set; }
         public ICommand StopMusicCommand { get; set; }
         public ICommand RewindMusicCommand { get; set; }
+        public ICommand SkipTimeInMusicCommand { get; set; }
 
         public MainViewModel()
         {
@@ -34,6 +35,7 @@ namespace MusicPlayer.UI.Views.MainView
             PlayMusicCommand = new RelayCommand(PlayMusic, CanPlayMusic);
             StopMusicCommand = new RelayCommand(StopMusic);
             RewindMusicCommand = new RelayCommand(OnRewindMusicCommand);
+            SkipTimeInMusicCommand = new RelayCommand<object>(OnSkipTimeInMusicCommand);
 
             //Sets Starting Page
             Navigation("Playlist");
@@ -117,6 +119,14 @@ namespace MusicPlayer.UI.Views.MainView
         {
             if (audioFile == null) return;
             audioFile.Position = 0;
+        }
+
+        public void OnSkipTimeInMusicCommand(object sec)
+        {
+            if(audioFile != null && sec != null)
+            {
+                audioFile.Skip(int.Parse(sec.ToString()));
+            }
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs args)
