@@ -20,13 +20,14 @@ namespace MusicPlayer.UI.Views.Playlists
 
         private static string staticPath = "";
 
-        FileWorker fileWorker = new(staticPath);
+        FileWorker fileWorker;
 
         public PlayListViewModel()
         {
             staticPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
             staticPath += "\\Music\\ACDC";
 
+            fileWorker = new(staticPath);
 
             LoadData();
         }
