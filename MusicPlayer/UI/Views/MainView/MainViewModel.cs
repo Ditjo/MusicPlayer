@@ -1,4 +1,5 @@
-﻿using MusicPlayer.Services.Command;
+﻿using MusicPlayer.Data.Models;
+using MusicPlayer.Services.Command;
 using MusicPlayer.Services.Navigation;
 using MusicPlayer.UI.Base;
 using MusicPlayer.UI.Views.FrontPage;
@@ -96,7 +97,7 @@ namespace MusicPlayer.UI.Views.MainView
             }
             if (audioFile == null)
             {
-                audioFile = new AudioFileReader(SelectedMusic);
+                audioFile = new AudioFileReader(SelectedMusic.Url);
                 outputDevice.Init(audioFile);
             }
 
@@ -105,7 +106,7 @@ namespace MusicPlayer.UI.Views.MainView
 
         public bool CanPlayMusic()
         {
-            return SelectedMusic is not null && File.Exists(SelectedMusic);
+            return SelectedMusic is not null && File.Exists(SelectedMusic.Url);
         }
 
         public void StopMusic()
@@ -181,8 +182,8 @@ namespace MusicPlayer.UI.Views.MainView
             }
         }
 
-        private string? _selectedMusic;
-        public string? SelectedMusic
+        private Song? _selectedMusic;
+        public Song? SelectedMusic
         {
             get
             {

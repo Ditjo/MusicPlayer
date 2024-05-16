@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using MusicPlayer.Data.Models;
 
 namespace MusicPlayer.UI.Views.Playlists
 {
@@ -25,7 +26,6 @@ namespace MusicPlayer.UI.Views.Playlists
         public PlayListViewModel()
         {
             staticPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-            staticPath += "\\Music\\ACDC";
 
             fileWorker = new(staticPath);
 
@@ -36,28 +36,31 @@ namespace MusicPlayer.UI.Views.Playlists
 
         public void LoadData()
         {
-            FilePaths = fileWorker.ReadfilePaths();
+            Songs = fileWorker.GetAllSongs();
         }
 
         #endregion
 
         #region Properties
-        private List<string> _filePaths;
-        public List<string> FilePaths
+
+        private List<Song>? _songs;
+
+        public List<Song>? Songs
         {
-            get
+            get 
             {
-                return _filePaths;
+                return _songs; 
             }
-            set
+            set 
             {
-                if (_filePaths != value)
+                if (_songs != value)
                 {
-                    _filePaths = value;
+                    _songs = value;
                     OnPropertyChanged();
                 }
             }
         }
+
 
         #endregion
     }

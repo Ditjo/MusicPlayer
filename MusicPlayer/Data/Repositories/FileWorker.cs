@@ -16,26 +16,63 @@ namespace MusicPlayer.Data.Repositories
             _filePath = filePath;
         }
 
-        public List<string> ReadfilePaths()
+        public List<Song> GetAllSongs()
         {
-            var files = Directory.GetFiles(_filePath);
+            List<Song> songs = new List<Song>();
 
-            if(files != null)
-                return files.ToList();
-            return new();
+            songs.AddRange(GetSongs(_filePath));
+
+            return songs;
         }
 
-        public List<Song> ReadSongs()
+        private string[] GetFolders(string path)
+        {
+            try
+            {
+                return Directory.GetDirectories(path);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        //Recursive Method: Calls it's self
+        private List<Song> GetSongs(string path)
         {
             List<Song> list = new List<Song>();
-            var files = Directory.GetFiles(_filePath);
 
-            foreach(var song in files)
+            list.AddRange(GetSongObject(path));
+            
+            foreach (var subFolder in GetFolders(path))
             {
-                list.Add(new Song
+                list.AddRange(GetSongs(subFolder));
+            }
+
+            return list;
+        }
+
+
+        private List<Song> GetSongObject(string path)
+        {
+            List<Song> list = new List<Song>();
+
+            try
+            {
+                var songs = Directory.GetFiles(path);
+
+                foreach (var song in songs)
                 {
-                    Url = song,
-                });
+                    list.Add(new Song()
+                    {
+                        Url = song
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return list;
         }
