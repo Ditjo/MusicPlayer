@@ -18,7 +18,6 @@ namespace MusicPlayer.UI.Views.Playlists
 {
     public class PlayListViewModel : ViewModelBase
     {
-
         private static string staticPath = "";
 
         FileWorker fileWorker;

@@ -7,9 +7,79 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="Options View"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox ItemsSource="{Binding Songs}" SelectedItem="{Binding DataContext.SelectedMusic, 
+                RelativeSource={RelativeSource 
+                Mode=FindAncestor, 
+                AncestorType=Window}}"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Song: "/>
+                            <TextBlock Text="{Binding SongName}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Url: "/>
+                            <TextBlock Text="{Binding Url}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Artist: "/>
+                            <TextBlock Text="{Binding Artist}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Length: "/>
+                            <TextBlock Text="{Binding Length}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                <TextBlock Text="Song Info"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name: "/>
+                    <TextBlock Text="{Binding DataContext.SelectedMusic.SongName,
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType=Window}}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Artist: "/>
+                    <TextBlock Text="{Binding DataContext.SelectedMusic.Artist,
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType=Window}}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Duration: "/>
+                    <TextBlock Text="{Binding DataContext.SelectedMusic.Length,
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType=Window}}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Url"/>
+                    <TextBlock Text="{Binding DataContext.SelectedMusic.Url,
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType=Window}}"/>
+                </StackPanel>
+                <Button Content="Convert" Command="{Binding ConvertCommand}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -12,6 +12,6 @@ namespace MusicPlayer.Data.Models
         public string? Url { get; set; }
         public string? SongName { get; set; }
         public string? Artist {  get; set; }
-        public DateTime Length { get; set; }
+        public TimeSpan Length { get; set; }
     }
 }
