@@ -1,4 +1,5 @@
 ﻿using MusicPlayer.Services.Navigation;
+using MusicPlayer.UI.Views.MainView;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,5 +22,25 @@ namespace MusicPlayer.UI.Base
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private string _header;
+        public string Header
+        {
+            get 
+            {
+                return _header;
+            }
+            set 
+            {
+                if (_header != value)
+                {
+                    _header = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
     }
+
+
+
 }

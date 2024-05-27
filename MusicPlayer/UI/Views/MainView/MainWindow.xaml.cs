@@ -20,14 +20,14 @@ namespace MusicPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MediaPlayer mediaPlayer = new MediaPlayer();
+        //private MediaPlayer mediaPlayer = new MediaPlayer();
         private MainViewModel _viewModel;
         public MainWindow()
         {
             InitializeComponent();
             _viewModel = new MainViewModel();
-            DataContext = _viewModel;
             Closing += _viewModel.OnClosingCommand;
+            DataContext = _viewModel;
         }
     }
 }

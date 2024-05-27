@@ -39,7 +39,7 @@ namespace MusicPlayer.UI.Views.MainView
             SkipTimeInMusicCommand = new RelayCommand<object>(OnSkipTimeInMusicCommand);
 
             //Sets Starting Page
-            Navigation("Playlist");
+            RequestForNavigation("Playlist");
 
             OutputVolume = 100;
         }
@@ -52,22 +52,26 @@ namespace MusicPlayer.UI.Views.MainView
 
         internal void Navigation(string obj, object? entity = null)
         {
+            ViewModelBase viewModel;
             switch (obj)
             {
                 case "FrontPage":
-                    ViewModelBase frontPageView = new FrontPageViewModel();
-                    frontPageView.RequestForNavigationEvent += RequestForNavigation;
-                    SelectedViewModel = frontPageView;
+                    viewModel = new FrontPageViewModel();
+                    viewModel.RequestForNavigationEvent += RequestForNavigation;
+                    viewModel.Header = "Home";
+                    SelectedViewModel = viewModel;
                     break;
                 case "Playlist":
-                    ViewModelBase playListView = new PlayListViewModel();
-                    playListView.RequestForNavigationEvent += RequestForNavigation;
-                    SelectedViewModel = playListView;
+                    viewModel = new PlayListViewModel();
+                    viewModel.RequestForNavigationEvent += RequestForNavigation;
+                    viewModel.Header = "Playlists";
+                    SelectedViewModel = viewModel;
                     break;
                 case "Options":
-                    ViewModelBase optionsView = new OptionsViewModel();
-                    optionsView.RequestForNavigationEvent += RequestForNavigation;
-                    SelectedViewModel = optionsView;
+                    viewModel = new OptionsViewModel();
+                    viewModel.RequestForNavigationEvent += RequestForNavigation;
+                    viewModel.Header = "Options";
+                    SelectedViewModel = viewModel;
                     break;
                 default: throw new ArgumentException();
                 
