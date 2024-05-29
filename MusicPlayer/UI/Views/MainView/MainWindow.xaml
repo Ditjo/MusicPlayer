@@ -67,19 +67,35 @@
             Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}" />
 
             </Grid>
-            <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button Content="Rewind" Command="{Binding RewindMusicCommand}"/>
-                <Button Content="&lt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>
-                <Button Content="Play" Command="{Binding PlayMusicCommand}"/>
-                <Button Content="Stop" Command="{Binding StopMusicCommand}"/>
-                <Button Content="&gt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5"/>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="0:00"/>
+                    <TextBlock Grid.Column="1" Text="{Binding CurrentTime, StringFormat={}{0:mm\\:ss}}" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding TimeOffSong, StringFormat={}{0:mm\\:ss}}"/>
+                </Grid>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Button Content="Rewind" Command="{Binding RewindMusicCommand}"/>
+                    <Button Content="&lt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>
+                    <Button Content="Play" Command="{Binding PlayMusicCommand}"/>
+                    <Button Content="Stop" Command="{Binding StopMusicCommand}"/>
+                    <Button Content="&gt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5"/>
 
-                <Slider Value="{Binding OutputVolume}" 
+                    <Slider Value="{Binding OutputVolume}" 
                     Minimum="0" 
                     Maximum="100"
                     Width="100"></Slider>
-                <TextBlock Text="{Binding OutputVolume}" Width="100"/>
-            </StackPanel>
+                    <TextBlock Text="{Binding OutputVolume}" Width="100"/>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

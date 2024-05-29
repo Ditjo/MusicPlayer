@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace MusicPlayer.UI.Views.MainView
 {
@@ -22,6 +23,7 @@ namespace MusicPlayer.UI.Views.MainView
     {
         private bool musicNotStoppedByPerson = true;
         private WaveOutEvent? outputDevice;
+        private readonly DispatcherTimer musicTimer;
         private AudioFileReader? audioFile;
 
         public ICommand NavigationCommand { get; set; }
@@ -40,6 +42,10 @@ namespace MusicPlayer.UI.Views.MainView
 
             //Sets Starting Page
             RequestForNavigation("Playlist");
+
+            musicTimer = new DispatcherTimer();
+            musicTimer.Interval = TimeSpan.FromMilliseconds(500);
+            musicTimer.Tick += TimerTick;
 
             OutputVolume = 100;
         }
@@ -74,7 +80,7 @@ namespace MusicPlayer.UI.Views.MainView
                     SelectedViewModel = viewModel;
                     break;
                 default: throw new ArgumentException();
-                
+
             }
         }
 
@@ -94,18 +100,8 @@ namespace MusicPlayer.UI.Views.MainView
         {
             Debug.WriteLine("Playing Music...");
 
-            if (outputDevice == null)
-            {
-                outputDevice = new WaveOutEvent();
-                outputDevice.PlaybackStopped += OnPlaybackStopped;
-            }
-            if (audioFile == null)
-            {
-                audioFile = new AudioFileReader(SelectedMusic.Url);
-                outputDevice.Init(audioFile);
-            }
-
-            outputDevice.Play();
+            outputDevice?.Play();
+            musicTimer.Start();
         }
 
         public bool CanPlayMusic()
@@ -118,6 +114,7 @@ namespace MusicPlayer.UI.Views.MainView
             Debug.WriteLine("Stopped Music");
             musicNotStoppedByPerson = false;
             outputDevice?.Stop();
+            musicTimer.Stop();
         }
 
         public void OnRewindMusicCommand()
@@ -128,7 +125,7 @@ namespace MusicPlayer.UI.Views.MainView
 
         public void OnSkipTimeInMusicCommand(object sec)
         {
-            if(audioFile != null && sec != null)
+            if (audioFile != null && sec != null)
             {
                 audioFile.Skip(int.Parse(sec.ToString()));
             }
@@ -150,7 +147,7 @@ namespace MusicPlayer.UI.Views.MainView
 
             if (outputDevice != null)
             {
-                if(outputDevice.PlaybackState == PlaybackState.Playing)
+                if (outputDevice.PlaybackState == PlaybackState.Playing)
                 {
                     outputDevice.Stop();
                 }
@@ -164,6 +161,29 @@ namespace MusicPlayer.UI.Views.MainView
             }
         }
 
+        public void SelectedSongInit()
+        {
+            CleanPlayback();
+            if (outputDevice == null)
+            {
+                outputDevice = new WaveOutEvent();
+                outputDevice.PlaybackStopped += OnPlaybackStopped;
+            }
+            if (audioFile == null)
+            {
+                audioFile = new AudioFileReader(SelectedMusic?.Url);
+                outputDevice.Init(audioFile);
+            }
+            TimeOffSong = audioFile is null ? TimeSpan.Zero : audioFile.TotalTime;
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            if (audioFile is not null)
+            {
+                CurrentTime = audioFile.CurrentTime;
+            }
+        }
 
         #endregion
 
@@ -197,24 +217,67 @@ namespace MusicPlayer.UI.Views.MainView
             {
                 if (_selectedMusic != value)
                 {
-                    CleanPlayback();
                     _selectedMusic = value;
+                    if(value is not null) SelectedSongInit();
                     OnPropertyChanged();
                 }
             }
         }
 
-        private float _outputVolume;
+        private TimeSpan _timeOffSong;
 
+        public TimeSpan TimeOffSong
+        {
+            get
+            {
+                //if(AudioFile != null)
+                //{
+                //    return AudioFile.TotalTime;
+                //}
+                //return TimeSpan.Zero;
+                return _timeOffSong;
+            }
+            set
+            {
+                if (_timeOffSong != value)
+                {
+                    _timeOffSong = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private TimeSpan _currentTime;
+
+        public TimeSpan CurrentTime
+        {
+            get
+            {
+                return _currentTime;
+            }
+            set
+            {
+                if (_currentTime != value)
+                {
+
+                    _currentTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+
+        private float _outputVolume;
         public float OutputVolume
         {
-            get 
+            get
             {
                 return _outputVolume;
             }
-            set 
+            set
             {
-                if(_outputVolume != value)
+                if (_outputVolume != value)
                 {
                     //if(audioFile != null)
                     //{
