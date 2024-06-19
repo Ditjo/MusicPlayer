@@ -29,5 +29,20 @@ namespace MusicPlayer
             Closing += _viewModel.OnClosingCommand;
             DataContext = _viewModel;
         }
+
+        private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if(sender is Slider slider) 
+            {
+                var t = slider.Value;
+                _viewModel.SetTime(TimeSpan.FromSeconds(t));
+            }
+            _viewModel.isDragging = false;
+        }
+
+        private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            _viewModel.isDragging = true;
+        }
     }
 }

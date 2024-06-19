@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -48,6 +49,7 @@ namespace MusicPlayer.UI.Views.MainView
             musicTimer.Tick += TimerTick;
 
             OutputVolume = 100;
+            PlayBtn = "Play";
         }
 
         internal void RequestForNavigation(string obj, object? entity = null)
@@ -99,9 +101,21 @@ namespace MusicPlayer.UI.Views.MainView
         public void PlayMusic()
         {
             Debug.WriteLine("Playing Music...");
+            if (outputDevice == null) return;
 
-            outputDevice?.Play();
-            musicTimer.Start();
+            if (outputDevice.PlaybackState == PlaybackState.Playing)
+            {
+                musicNotStoppedByPerson = false;
+                outputDevice?.Stop();
+                musicTimer.Stop();
+                PlayBtn = "Play";
+            }
+            else
+            {
+                outputDevice?.Play();
+                musicTimer.Start();
+                PlayBtn = "Stop";
+            }
         }
 
         public bool CanPlayMusic()
@@ -112,6 +126,7 @@ namespace MusicPlayer.UI.Views.MainView
         public void StopMusic()
         {
             Debug.WriteLine("Stopped Music");
+
             musicNotStoppedByPerson = false;
             outputDevice?.Stop();
             musicTimer.Stop();
@@ -131,6 +146,14 @@ namespace MusicPlayer.UI.Views.MainView
             }
         }
 
+        public void SetTime(TimeSpan time)
+        {
+            if (audioFile != null)
+            {
+                audioFile.CurrentTime = time;
+            }
+        }
+
         private void OnPlaybackStopped(object sender, StoppedEventArgs args)
         {
             //If music stopped on it's own. CleanPlayback.
@@ -139,9 +162,11 @@ namespace MusicPlayer.UI.Views.MainView
             {
                 CleanPlayback();
             }
+            PlayBtn = "Play";
             musicNotStoppedByPerson = true;
         }
 
+        //
         public void CleanPlayback()
         {
 
@@ -149,6 +174,8 @@ namespace MusicPlayer.UI.Views.MainView
             {
                 if (outputDevice.PlaybackState == PlaybackState.Playing)
                 {
+                    outputDevice.PlaybackStopped -= OnPlaybackStopped;
+                    PlayBtn = "Play";
                     outputDevice.Stop();
                 }
                 outputDevice.Dispose();
@@ -177,9 +204,11 @@ namespace MusicPlayer.UI.Views.MainView
             TimeOffSong = audioFile is null ? TimeSpan.Zero : audioFile.TotalTime;
         }
 
+
+        public bool isDragging = false;
         private void TimerTick(object sender, EventArgs e)
         {
-            if (audioFile is not null)
+            if (audioFile is not null && !isDragging)
             {
                 CurrentTime = audioFile.CurrentTime;
             }
@@ -218,23 +247,36 @@ namespace MusicPlayer.UI.Views.MainView
                 if (_selectedMusic != value)
                 {
                     _selectedMusic = value;
-                    if(value is not null) SelectedSongInit();
+                    if (value is not null) SelectedSongInit();
                     OnPropertyChanged();
                 }
             }
         }
 
-        private TimeSpan _timeOffSong;
+        private string _playBtn;
 
+        public string PlayBtn
+        {
+            get
+            {
+                return _playBtn;
+            }
+            set
+            {
+                if (_playBtn != value)
+                {
+                    _playBtn = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        private TimeSpan _timeOffSong;
         public TimeSpan TimeOffSong
         {
             get
             {
-                //if(AudioFile != null)
-                //{
-                //    return AudioFile.TotalTime;
-                //}
-                //return TimeSpan.Zero;
                 return _timeOffSong;
             }
             set
@@ -248,7 +290,6 @@ namespace MusicPlayer.UI.Views.MainView
         }
 
         private TimeSpan _currentTime;
-
         public TimeSpan CurrentTime
         {
             get
@@ -265,8 +306,6 @@ namespace MusicPlayer.UI.Views.MainView
                 }
             }
         }
-
-
 
         private float _outputVolume;
         public float OutputVolume
