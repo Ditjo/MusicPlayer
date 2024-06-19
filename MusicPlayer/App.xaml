@@ -7,6 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Assets/ViewViewModelBindings/ViewViewModelBinding.xaml"/>
+                <ResourceDictionary Source="/Assets/Converters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         
