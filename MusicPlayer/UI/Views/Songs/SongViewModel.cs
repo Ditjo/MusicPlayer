@@ -10,19 +10,19 @@ namespace MusicPlayer.UI.Views.Songs
 {
     public class SongViewModel : ViewModelBase
     {
-		private List<Song>? _song;
 
-		public List<Song>? MyProperty
+        private List<Song>? _songs;
+		public List<Song>? Songs
 		{
 			get 
 			{
-				return _song; 
+				return _songs; 
 			}
 			set 
 			{
-				if (_song != value)
+				if (_songs != value)
 				{
-					_song = value;
+					_songs = value;
 					OnPropertyChanged();
 				}
 			}
