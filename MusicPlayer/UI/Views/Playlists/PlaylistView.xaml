@@ -17,30 +17,30 @@
                 AncestorType=Window}}"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Song: "/>
-                                <TextBlock Text="{Binding SongName}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Url: "/>
-                                <TextBlock Text="{Binding Url}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Artist: "/>
-                                <TextBlock Text="{Binding Artist}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Length: "/>
-                                <TextBlock Text="{Binding Length}"/>
-                            </StackPanel>
+                            <TextBlock Text="Song: "/>
+                            <TextBlock Text="{Binding SongName}"/>
                         </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Grid Grid.Column="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Url: "/>
+                            <TextBlock Text="{Binding Url}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Artist: "/>
+                            <TextBlock Text="{Binding Artist}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Length: "/>
+                            <TextBlock Text="{Binding Length}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -53,5 +53,37 @@
                     AncestorType=Window}}"/>
             </StackPanel>
         </Grid>
+
+        <!--<ListView ItemsSource="{Binding Songs}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal"
+                            Grid.Row="0">
+                                <TextBlock Text="Title: "/>
+                                <TextBlock Text="{Binding SongName}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                            Grid.Row="0">
+                                <TextBlock Text="Artist: "/>
+                                <TextBlock Text="{Binding Artist}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                            Grid.Row="0">
+                                <TextBlock Text="Time: "/>
+                                <TextBlock Text="{Binding Length}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+
     </Grid>
 </UserControl>

@@ -5,6 +5,7 @@ using MusicPlayer.UI.Base;
 using MusicPlayer.UI.Views.FrontPage;
 using MusicPlayer.UI.Views.Options;
 using MusicPlayer.UI.Views.Playlists;
+using MusicPlayer.UI.Views.Songs;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,12 @@ namespace MusicPlayer.UI.Views.MainView
                     viewModel = new PlayListViewModel();
                     viewModel.RequestForNavigationEvent += RequestForNavigation;
                     viewModel.Header = "Playlists";
+                    SelectedViewModel = viewModel;
+                    break;
+                case "Songs":
+                    viewModel = new SongViewModel();
+                    viewModel.RequestForNavigationEvent += RequestForNavigation;
+                    viewModel.Header = "Songs";
                     SelectedViewModel = viewModel;
                     break;
                 case "Options":
