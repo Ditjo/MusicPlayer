@@ -4,9 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicPlayer.UI.Views.SongControls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Slider x:Name="TimeSlider" 
+                Grid.Column="1"
+                            Orientation="Horizontal"
+                            Minimum="0"
+                            Maximum="{Binding TimeOffSong, Converter={StaticResource TimeSpanToDoubleConverter}}"
+                            Value="{Binding CurrentTime, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="DragStartedEvent">
+                        <i:CallMethodAction TargetObject="{Binding}" MethodName="TestMethod"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Slider.Thumb.DragStarted">
+                        <i:InvokeCommandAction Command="{Binding SliderDragStartedCommand}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DragCompleted">
+                        <i:InvokeCommandAction Command="{Binding SliderDragCompletedCommand}" CommandParameter="{Binding ElementName=TimeSlider, Path=Value, Mode=TwoWay}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Slider>
+
+            <!--<TextBlock Grid.Column="0" Text="0:00"/>-->
+            <TextBlock Grid.Column="0" Text="{Binding CurrentTime, StringFormat={}{0:mm\\:ss}}"/>
+            <TextBlock Grid.Column="2" Text="{Binding TimeOffSong, StringFormat={}{0:mm\\:ss}}"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+        </Grid>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button Content="Rewind" Command="{Binding RewindMusicCommand}"/>
+            <Button Content="&lt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>
+            <Button Content="{Binding PlayBtn}" Command="{Binding PlayMusicCommand}"/>
+            <!--<Button Content="Stop" Command="{Binding StopMusicCommand}"/>-->
+            <Button Content="&gt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:CallMethodAction TargetObject="{Binding}" MethodName="TestMethod"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Slider Value="{Binding OutputVolume}" 
+                    Minimum="0" 
+                    Maximum="100"
+                    Width="100"></Slider>
+            <TextBlock Text="{Binding OutputVolume}" Width="100"/>
+        </StackPanel>
     </Grid>
 </UserControl>

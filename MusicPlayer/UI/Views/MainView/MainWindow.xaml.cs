@@ -20,7 +20,6 @@ namespace MusicPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private MediaPlayer mediaPlayer = new MediaPlayer();
         private MainViewModel _viewModel;
         public MainWindow()
         {
@@ -30,19 +29,19 @@ namespace MusicPlayer
             DataContext = _viewModel;
         }
 
-        private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {
-            if(sender is Slider slider) 
-            {
-                var t = slider.Value;
-                _viewModel.SetTime(TimeSpan.FromSeconds(t));
-            }
-            _viewModel.isDragging = false;
-        }
+        //private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        //{
+        //    if (sender is Slider slider)
+        //    {
+        //        var t = slider.Value;
+        //        _viewModel.SetTime(TimeSpan.FromSeconds(t));
+        //    }
+        //    _viewModel.isDragging = false;
+        //}
 
-        private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
-        {
-            _viewModel.isDragging = true;
-        }
+        //private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        //{
+        //    _viewModel.isDragging = true;
+        //}
     }
 }

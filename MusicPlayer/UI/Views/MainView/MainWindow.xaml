@@ -32,6 +32,8 @@
                 <Button Height="60" 
                             Width="60" 
                             Content="Songs"
+                        Command="{Binding NavigationCommand}"
+                        CommandParameter="Songs"
                             />
                 <Button Height="60" 
                             Width="60" 
@@ -69,6 +71,11 @@
 
             </Grid>
             <Grid Grid.Row="2">
+                <ContentControl Content="{Binding SongControls, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            
+            
+            <!--<Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -88,7 +95,7 @@
                             Value="{Binding CurrentTime, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=TwoWay}">
                     </Slider>
 
-                    <!--<TextBlock Grid.Column="0" Text="0:00"/>-->
+                    --><!--<TextBlock Grid.Column="0" Text="0:00"/>--><!--
                     <TextBlock Grid.Column="0" Text="{Binding CurrentTime, StringFormat={}{0:mm\\:ss}}"/>
                     <TextBlock Grid.Column="2" Text="{Binding TimeOffSong, StringFormat={}{0:mm\\:ss}}"/>
                 </Grid>
@@ -102,7 +109,7 @@
                     <Button Content="Rewind" Command="{Binding RewindMusicCommand}"/>
                     <Button Content="&lt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>
                     <Button Content="{Binding PlayBtn}" Command="{Binding PlayMusicCommand}"/>
-                    <!--<Button Content="Stop" Command="{Binding StopMusicCommand}"/>-->
+                    --><!--<Button Content="Stop" Command="{Binding StopMusicCommand}"/>--><!--
                     <Button Content="&gt;" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5"/>
 
                     <Slider Value="{Binding OutputVolume}" 
@@ -111,7 +118,7 @@
                     Width="100"></Slider>
                     <TextBlock Text="{Binding OutputVolume}" Width="100"/>
                 </StackPanel>
-            </Grid>
+            </Grid>-->
         </Grid>
     </Grid>
 </Window>

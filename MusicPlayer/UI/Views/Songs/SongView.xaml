@@ -10,7 +10,15 @@
         <TextBlock Text="Songs" 
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
-        <ListView ItemsSource="{Binding Songs}">
+        <ListView ItemsSource="{Binding DataContext.Songs,           
+               RelativeSource={RelativeSource 
+               Mode=FindAncestor, 
+               AncestorType=Window}}"
+                  SelectedItem="{Binding DataContext.SelectedSong, 
+                RelativeSource={RelativeSource 
+                Mode=FindAncestor, 
+                AncestorType=Window}}"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border>
