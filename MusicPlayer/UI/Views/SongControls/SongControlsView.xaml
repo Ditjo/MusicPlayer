@@ -19,23 +19,13 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Slider x:Name="TimeSlider" 
-                Grid.Column="1"
+                Grid.Column="1" 
+                    Thumb.DragCompleted="TimeSlider_DragCompleted"
+                    Thumb.DragStarted="TimeSlider_DragStarted"
                             Orientation="Horizontal"
                             Minimum="0"
                             Maximum="{Binding TimeOffSong, Converter={StaticResource TimeSpanToDoubleConverter}}"
                             Value="{Binding CurrentTime, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=TwoWay}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="DragStartedEvent">
-                        <i:CallMethodAction TargetObject="{Binding}" MethodName="TestMethod"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="Slider.Thumb.DragStarted">
-                        <i:InvokeCommandAction Command="{Binding SliderDragStartedCommand}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="DragCompleted">
-                        <i:InvokeCommandAction Command="{Binding SliderDragCompletedCommand}" CommandParameter="{Binding ElementName=TimeSlider, Path=Value, Mode=TwoWay}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-
             </Slider>
 
             <!--<TextBlock Grid.Column="0" Text="0:00"/>-->

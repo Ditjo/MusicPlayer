@@ -37,8 +37,6 @@ namespace MusicPlayer.UI.Views.SongControls
             StopMusicCommand = new RelayCommand(StopMusic);
             RewindMusicCommand = new RelayCommand(OnRewindMusicCommand);
             SkipTimeInMusicCommand = new RelayCommand<object>(OnSkipTimeInMusicCommand);
-            SliderDragStartedCommand = new RelayCommand(Slider_DragStarted);
-            SliderDragCompletedCommand = new RelayCommand<object>(Slider_DragCompleted);
 
             musicTimer = new DispatcherTimer();
             musicTimer.Interval = TimeSpan.FromMilliseconds(500);
@@ -110,21 +108,6 @@ namespace MusicPlayer.UI.Views.SongControls
             {
                 audioFile.CurrentTime = time;
             }
-        }
-
-        public void Slider_DragCompleted(object sender)
-        {
-            if (sender is Slider slider)
-            {
-                var t = slider.Value;
-                SetTime(TimeSpan.FromSeconds(t));
-            }
-            isDragging = false;
-        }
-
-        public void Slider_DragStarted()
-        {
-            isDragging = true;
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs args)

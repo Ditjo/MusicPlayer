@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicPlayer.UI.Views.MainView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,23 @@ namespace MusicPlayer.UI.Views.SongControls
         public SongControlsView()
         {
             InitializeComponent();
+        }
+
+        private void TimeSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            var datacontext = (SongControlsViewModel)DataContext;
+            if (sender is Slider slider)
+            {
+                var t = slider.Value;
+                datacontext.SetTime(TimeSpan.FromSeconds(t));
+            }
+            datacontext.isDragging = false;
+        }
+
+        private void TimeSlider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            var datacontext = (SongControlsViewModel)DataContext;
+            datacontext.isDragging = true;
         }
 
         //private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
