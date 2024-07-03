@@ -28,8 +28,6 @@ namespace MusicPlayer.UI.Views.SongControls
         public ICommand StopMusicCommand { get; set; }
         public ICommand RewindMusicCommand { get; set; }
         public ICommand SkipTimeInMusicCommand { get; set; }
-        public ICommand SliderDragStartedCommand { get; private set; }
-        public ICommand SliderDragCompletedCommand { get; private set; }
 
         public SongControlsViewModel()
         {
@@ -45,11 +43,6 @@ namespace MusicPlayer.UI.Views.SongControls
             OutputVolume = 100;
             PlayBtn = "Play";
 
-        }
-
-        public void TestMethod()
-        {
-            Debug.WriteLine("Look Here. Error Here. Something Here.");
         }
 
         #region Commands
@@ -193,7 +186,6 @@ namespace MusicPlayer.UI.Views.SongControls
         }
 
         private string _playBtn;
-
         public string PlayBtn
         {
             get

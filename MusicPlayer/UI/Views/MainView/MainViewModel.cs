@@ -46,6 +46,11 @@ namespace MusicPlayer.UI.Views.MainView
             RequestForNavigation("Home");
         }
 
+        public void LoadData()
+        {
+            FullSongList = fileWorker.GetAllSongs();
+        }
+
         internal void RequestForNavigation(string obj, object? entity = null)
         {
             //Used To Also Close Dialogs
@@ -70,7 +75,7 @@ namespace MusicPlayer.UI.Views.MainView
                     SelectedViewModel = viewModel;
                     break;
                 case "Songs":
-                    viewModel = new SongViewModel();
+                    viewModel = new SongViewModel(FullSongList);
                     viewModel.RequestForNavigationEvent += RequestForNavigation;
                     viewModel.Header = "Songs";
                     SelectedViewModel = viewModel;
@@ -103,10 +108,6 @@ namespace MusicPlayer.UI.Views.MainView
             SongControls.SelectedMusic = song;
         }
 
-        public void LoadData()
-        {
-            Songs = fileWorker.GetAllSongs();
-        }
 
         #endregion
 
@@ -146,18 +147,18 @@ namespace MusicPlayer.UI.Views.MainView
             }
         }
 
-        private List<Song>? _songs;
-        public List<Song>? Songs
+        private List<Song>? _fullSongList;
+        public List<Song>? FullSongList
         {
             get
             {
-                return _songs;
+                return _fullSongList;
             }
             set
             {
-                if (_songs != value)
+                if (_fullSongList != value)
                 {
-                    _songs = value;
+                    _fullSongList = value;
                     OnPropertyChanged();
                 }
             }
@@ -183,5 +184,30 @@ namespace MusicPlayer.UI.Views.MainView
 
         #endregion
 
+        //#region ViewModels
+
+        //private FrontPageViewModel frontPageViewModel;
+        //public FrontPageViewModel FrontPageViewModel
+        //{
+        //    get
+        //    {
+        //        if (frontPageViewModel is null)
+        //            frontPageViewModel = new FrontPageViewModel();
+        //        return frontPageViewModel;
+        //    } 
+        //}
+
+        //private FrontPageViewModel frontPageViewModel;
+        //public FrontPageViewModel FrontPageViewModel
+        //{
+        //    get
+        //    {
+        //        if (frontPageViewModel is null)
+        //            frontPageViewModel = new FrontPageViewModel();
+        //        return frontPageViewModel;
+        //    }
+        //}
+
+        //#endregion
     }
 }
