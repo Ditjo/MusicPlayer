@@ -10,19 +10,32 @@ namespace MusicPlayer.UI.Views.Songs
 {
     public class SongViewModel : ViewModelBase
     {
+		private readonly List<Song>? _fullSongList;
 
-        private List<Song>? _songs;
-		public List<Song>? Songs
+		public SongViewModel(List<Song>? songs) 
 		{
-			get 
+            _fullSongList = songs ?? new List<Song>();
+
+			LoadData();
+        }
+
+		private void LoadData()
+		{
+			VisibleSongs = _fullSongList;
+		}
+
+        private List<Song>? _visibleSongs;
+		public List<Song>? VisibleSongs
+		{
+			get
 			{
-				return _songs; 
+				return _visibleSongs;
 			}
-			set 
+			set
 			{
-				if (_songs != value)
+				if (_visibleSongs != value)
 				{
-					_songs = value;
+					_visibleSongs = value;
 					OnPropertyChanged();
 				}
 			}
