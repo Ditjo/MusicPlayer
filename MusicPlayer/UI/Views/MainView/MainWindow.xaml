@@ -23,7 +23,7 @@
                             Width="60" 
                             Content="Home"
                             Command="{Binding NavigationCommand}"
-                            CommandParameter="FrontPage"/>
+                            CommandParameter="Home"/>
                 <Button Height="60" 
                             Width="60" 
                             Content="Playlists"

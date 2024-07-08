@@ -20,8 +20,9 @@ namespace MusicPlayer.UI.Views.SongControls
     {
         private bool musicNotStoppedByPerson = true;
         private WaveOutEvent? outputDevice;
-        private readonly DispatcherTimer musicTimer;
         private AudioFileReader? audioFile;
+
+        private readonly DispatcherTimer musicTimer;
 
         public ICommand NavigationCommand { get; set; }
         public ICommand PlayMusicCommand { get; set; }
@@ -42,7 +43,6 @@ namespace MusicPlayer.UI.Views.SongControls
 
             OutputVolume = 100;
             PlayBtn = "Play";
-
         }
 
         #region Commands
@@ -110,6 +110,7 @@ namespace MusicPlayer.UI.Views.SongControls
             if (musicNotStoppedByPerson)
             {
                 CleanPlayback();
+                //Raise Event for next Song
             }
             PlayBtn = "Play";
             musicNotStoppedByPerson = true;

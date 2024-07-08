@@ -21,11 +21,47 @@
             Margin="10"
             BorderBrush="Black"
             BorderThickness="2">
+            <StackPanel>
+                <TextBlock 
+                    Text="Music Queue" 
+                    FontSize="32"
+                    HorizontalAlignment="Center"/>
 
-            <TextBlock 
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="Que Music"/>
+                <ListView ItemsSource="{Binding DataContext.SongQueueObs,                 
+                RelativeSource={RelativeSource 
+                Mode=FindAncestor, 
+                AncestorType=Window}}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal"
+                            Grid.Row="0">
+                                        <TextBlock Text="Title: "/>
+                                        <TextBlock Text="{Binding SongName}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                            Grid.Row="1">
+                                        <TextBlock Text="Artist: "/>
+                                        <TextBlock Text="{Binding Artist}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                            Grid.Row="2">
+                                        <TextBlock Text="Time: "/>
+                                        <TextBlock Text="{Binding Length,StringFormat={}{0:mm\\:ss}}"/>
+                                    </StackPanel>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
         </Border>
 
     </Grid>

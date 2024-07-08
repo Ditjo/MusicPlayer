@@ -1,6 +1,7 @@
 ﻿using MusicPlayer.Data.Models;
 using MusicPlayer.Data.Repositories;
 using MusicPlayer.Services.Command;
+using MusicPlayer.Services.Helpers;
 using MusicPlayer.Services.Navigation;
 using MusicPlayer.UI.Base;
 using MusicPlayer.UI.Views.FrontPage;
@@ -11,6 +12,7 @@ using MusicPlayer.UI.Views.Songs;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -29,6 +31,7 @@ namespace MusicPlayer.UI.Views.MainView
         FileWorker fileWorker;
 
         public ICommand NavigationCommand { get; set; }
+        public ICommand AddSongToQueueCommand { get; set; }
 
         public MainViewModel()
         {
@@ -39,8 +42,10 @@ namespace MusicPlayer.UI.Views.MainView
             LoadData();
 
             NavigationCommand = new RelayCommand<object>(OnNavigateCommand);
+            AddSongToQueueCommand = new RelayCommand(OnAddSongToQueueCommand);
 
             SongControls = new SongControlsViewModel();
+            SongQueue = new();
 
             //Sets Starting Page
             RequestForNavigation("Home");
@@ -97,16 +102,23 @@ namespace MusicPlayer.UI.Views.MainView
             RequestForNavigation(obj.ToString());
         }
 
-        public void OnClosingCommand(object? sender, CancelEventArgs e)
+        public void OnClosingEvent(object? sender, CancelEventArgs e)
         {
             Debug.WriteLine("Closing Progam");
             SongControls.CleanPlayback();
+        }
+
+        private void OnAddSongToQueueCommand()
+        {
+            if (SelectedSong is not null)
+                SongQueue.Enqueue(SelectedSong);
         }
 
         private void SetSongInSongControl(Song? song)
         {
             SongControls.SelectedMusic = song;
         }
+
 
 
         #endregion
@@ -133,11 +145,11 @@ namespace MusicPlayer.UI.Views.MainView
         private SongControlsViewModel _songControls;
         public SongControlsViewModel SongControls
         {
-            get 
+            get
             {
-                return _songControls; 
+                return _songControls;
             }
-            set 
+            set
             {
                 if (value != _songControls)
                 {
@@ -181,6 +193,28 @@ namespace MusicPlayer.UI.Views.MainView
                 }
             }
         }
+
+        private Queue<Song> _songQueue;
+        public Queue<Song> SongQueue
+        {
+            get
+            {
+                return _songQueue;
+            }
+            set
+            {
+                if (_songQueue != value)
+                {
+                    _songQueue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public ObservableCollection<Song> SongQueueObs
+        {
+            get { return SongQueue.ToList().ToObservableCollection(); }
+        }
+
 
         #endregion
 

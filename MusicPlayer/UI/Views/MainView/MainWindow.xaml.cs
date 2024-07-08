@@ -25,7 +25,7 @@ namespace MusicPlayer
         {
             InitializeComponent();
             _viewModel = new MainViewModel();
-            Closing += _viewModel.OnClosingCommand;
+            Closing += _viewModel.OnClosingEvent;
             DataContext = _viewModel;
         }
     }
