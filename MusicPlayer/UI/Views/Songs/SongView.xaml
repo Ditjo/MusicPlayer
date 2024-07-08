@@ -10,15 +10,83 @@
         <TextBlock Text="Songs" 
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
-        <ListView ItemsSource="{Binding VisibleSongs}"
+        <DataGrid ItemsSource="{Binding VisibleSongs}"
                   SelectedItem="{Binding DataContext.SelectedSong, 
                 RelativeSource={RelativeSource 
                 Mode=FindAncestor, 
                 AncestorType=Window}}"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListView.ItemTemplate>
+                  FontSize="18"
+                  AlternatingRowBackground="LightGray"
+                  AutoGenerateColumns="False"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn 
+                    Header="Titel" 
+                    Binding="{Binding SongName}"/>
+                <DataGridTextColumn 
+                    Header="Artist" 
+                    Binding="{Binding Artist}"/>
+                <DataGridTextColumn 
+                    Header="Time" 
+                    Binding="{Binding Length,StringFormat={}{0:mm\\:ss}}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Menu FontSize="18">
+                                <MenuItem Header="...">
+                                    <MenuItem Header="Play Now" Command="{Binding}"/>
+                                    <MenuItem Header="Play Next"/>
+                                    <MenuItem Header="Add to Playlist"/>
+                                    <MenuItem Header="Edit Songdata"/>
+                                </MenuItem>
+                            </Menu>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <!--<DataGrid.ItemTemplate>
                 <DataTemplate>
                     <Border>
+                        --><!--<Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal"
+                                            Grid.Row="0">
+                                    <TextBlock Text="Title: "/>
+                                    <TextBlock Text="{Binding SongName}"/>
+                                </StackPanel>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal"
+                                        Grid.Column="0">
+                                        <TextBlock Text="Artist: "/>
+                                        <TextBlock Text="{Binding Artist}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                                                Grid.Column="1">
+                                        <TextBlock Text="Time: "/>
+                                        <TextBlock Text="{Binding Length}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Menu Grid.Column="1">
+                                <MenuItem Header="...">
+                                    <MenuItem Header="Play"/>
+                                    <MenuItem Header="Que"/>
+                                    <MenuItem Header="Add"/>
+                                </MenuItem>
+                            </Menu>
+                        </Grid>--><!--
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -44,17 +112,17 @@
                             <StackPanel Orientation="Horizontal"
                             Grid.Column="3">
                                 <Menu>
-                                    <MenuItem Header="Play Now"/>
-                                    <MenuItem Header="Play Next"/>
-                                    <MenuItem Header="Add To Playlist"/>
+                                    <MenuItem Header="...">
+                                        <MenuItem Header="Play"/>
+                                        <MenuItem Header="Que"/>
+                                        <MenuItem Header="Add"/>
+                                    </MenuItem>
                                 </Menu>
-                                <TextBlock Text="Time: "/>
-                                <TextBlock Text="{Binding Length}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </DataGrid.ItemTemplate>-->
+        </DataGrid>
     </Grid>
 </UserControl>
