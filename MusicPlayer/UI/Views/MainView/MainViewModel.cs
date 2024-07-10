@@ -45,6 +45,7 @@ namespace MusicPlayer.UI.Views.MainView
             AddSongToQueueCommand = new RelayCommand(OnAddSongToQueueCommand);
 
             SongControls = new SongControlsViewModel();
+            SongControls.SongFinishedEvent += RequestForNextSong;
             SongQueue = new();
 
             //Sets Starting Page
@@ -104,14 +105,31 @@ namespace MusicPlayer.UI.Views.MainView
 
         public void OnClosingEvent(object? sender, CancelEventArgs e)
         {
-            Debug.WriteLine("Closing Progam");
+            Debug.WriteLine("Closing Program");
             SongControls.CleanPlayback();
         }
 
         private void OnAddSongToQueueCommand()
         {
             if (SelectedSong is not null)
+            {
                 SongQueue.Enqueue(SelectedSong);
+                PlayNextSongInQueue();
+            }
+        }
+        internal void RequestForNextSong(object? sender, EventArgs e)
+        {
+            PlayNextSongInQueue();
+        }
+        //TODO: If Selected Song and a queue is available, what should play, if playbtn is pressed?
+        public void PlayNextSongInQueue()
+        {
+            if ( SongQueue.Count > 0)
+            {
+                var song = SongQueue.Dequeue();
+
+                SongControls.AddSongToPlay(song);
+            }
         }
 
         private void SetSongInSongControl(Song? song)
@@ -210,6 +228,7 @@ namespace MusicPlayer.UI.Views.MainView
                 }
             }
         }
+
         public ObservableCollection<Song> SongQueueObs
         {
             get { return SongQueue.ToList().ToObservableCollection(); }

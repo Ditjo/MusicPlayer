@@ -22,6 +22,8 @@ namespace MusicPlayer.UI.Views.SongControls
         private WaveOutEvent? outputDevice;
         private AudioFileReader? audioFile;
 
+        public event EventHandler SongFinishedEvent;
+
         private readonly DispatcherTimer musicTimer;
 
         public ICommand NavigationCommand { get; set; }
@@ -43,6 +45,11 @@ namespace MusicPlayer.UI.Views.SongControls
 
             OutputVolume = 100;
             PlayBtn = "Play";
+        }
+
+        protected void OnSongFinishedEvent()
+        {
+            SongFinishedEvent.Invoke(this, new EventArgs());
         }
 
         #region Commands
@@ -162,6 +169,15 @@ namespace MusicPlayer.UI.Views.SongControls
             {
                 CurrentTime = audioFile.CurrentTime;
             }
+        }
+
+        public void AddSongToPlay(Song song)
+        {
+            if (SelectedMusic != null)
+                CleanPlayback();
+
+            SelectedMusic = song;
+            PlayMusic();
         }
 
         #endregion
