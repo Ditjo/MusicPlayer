@@ -35,7 +35,10 @@
                         <DataTemplate>
                             <Menu FontSize="18">
                                 <MenuItem Header="...">
-                                    <MenuItem Header="Play Now" Command="{Binding}"/>
+                                    <MenuItem Header="Play Now" Command="{Binding DataContext.AddSongToPlayNowCommand,
+                                        RelativeSource={RelativeSource 
+                                        Mode=FindAncestor, 
+                                        AncestorType=Window}}"/>
                                     <MenuItem Header="Play Next" Command="{Binding DataContext.AddSongToQueueCommand,                 
                                         RelativeSource={RelativeSource 
                                         Mode=FindAncestor, 

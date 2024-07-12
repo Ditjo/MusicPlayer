@@ -43,6 +43,8 @@ namespace MusicPlayer.UI.Views.SongControls
             musicTimer.Interval = TimeSpan.FromMilliseconds(500);
             musicTimer.Tick += TimerTick;
 
+            SongQueue = new();
+
             OutputVolume = 100;
             PlayBtn = "Play";
         }
@@ -76,7 +78,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         public bool CanPlayMusic()
         {
-            return SelectedMusic is not null && System.IO.File.Exists(SelectedMusic.Url);
+            return SongPlaying is not null && System.IO.File.Exists(SongPlaying.Url);
         }
 
         public void StopMusic()
@@ -116,14 +118,24 @@ namespace MusicPlayer.UI.Views.SongControls
             //If more in playlist play that.
             if (musicNotStoppedByPerson)
             {
-                CleanPlayback();
+                //CleanPlayback();
+                PlayNextSongFromQueue();
                 //Raise Event for next Song
             }
             PlayBtn = "Play";
             musicNotStoppedByPerson = true;
         }
 
-        //
+        private void PlayNextSongFromQueue()
+        {
+            CleanPlayback();
+            if (SongQueue is null || SongQueue.Count == 0) return;
+
+            var song = SongQueue.Dequeue();
+            InitSongToPlay(song);
+            PlayMusic();
+        }
+        
         public void CleanPlayback()
         {
 
@@ -145,7 +157,7 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        public void SelectedSongInit()
+        public void InitSongToPlay(Song song)
         {
             CleanPlayback();
             if (outputDevice == null)
@@ -155,7 +167,7 @@ namespace MusicPlayer.UI.Views.SongControls
             }
             if (audioFile == null)
             {
-                audioFile = new AudioFileReader(SelectedMusic?.Url);
+                audioFile = new AudioFileReader(song?.Url);
                 outputDevice.Init(audioFile);
             }
             TimeOffSong = audioFile is null ? TimeSpan.Zero : audioFile.TotalTime;
@@ -171,13 +183,32 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        public void AddSongToPlay(Song song)
-        {
-            if (SelectedMusic != null)
-                CleanPlayback();
 
-            SelectedMusic = song;
-            PlayMusic();
+        public void AddSongToPlayNow(Song song)
+        {
+            SongQueue.Clear();
+            SongQueue.Enqueue(song);
+            PlayNextSongFromQueue();
+        }
+
+        public void AddSongToQueue(Song song)
+        {
+            SongQueue.Enqueue(song);
+
+            if(outputDevice is null)
+            {
+                PlayNextSongFromQueue();
+            }
+        }
+
+        public void AddPlayListToQueue(List<Song> songs)
+        {
+            if (songs is null || songs.Count == 0) return;
+
+            foreach (Song s in songs)
+            {
+                SongQueue.Enqueue(s);
+            }
         }
 
         #endregion
@@ -185,7 +216,7 @@ namespace MusicPlayer.UI.Views.SongControls
         #region Properties
 
         private Song? _selectedMusic;
-        public Song? SelectedMusic
+        public Song? SongPlaying
         {
             get
             {
@@ -196,7 +227,7 @@ namespace MusicPlayer.UI.Views.SongControls
                 if (_selectedMusic != value)
                 {
                     _selectedMusic = value;
-                    if (value is not null) SelectedSongInit();
+                    if (value is not null) InitSongToPlay(value);
                     OnPropertyChanged();
                 }
             }
@@ -277,6 +308,23 @@ namespace MusicPlayer.UI.Views.SongControls
                     }
 
                     _outputVolume = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Queue<Song> _songQueue;
+        public Queue<Song> SongQueue
+        {
+            get
+            {
+                return _songQueue;
+            }
+            set
+            {
+                if (_songQueue != value)
+                {
+                    _songQueue = value;
                     OnPropertyChanged();
                 }
             }

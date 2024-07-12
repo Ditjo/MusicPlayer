@@ -32,6 +32,7 @@ namespace MusicPlayer.UI.Views.MainView
 
         public ICommand NavigationCommand { get; set; }
         public ICommand AddSongToQueueCommand { get; set; }
+        public ICommand AddSongToPlayNowCommand { get; set; }
 
         public MainViewModel()
         {
@@ -43,10 +44,11 @@ namespace MusicPlayer.UI.Views.MainView
 
             NavigationCommand = new RelayCommand<object>(OnNavigateCommand);
             AddSongToQueueCommand = new RelayCommand(OnAddSongToQueueCommand);
+            AddSongToPlayNowCommand = new RelayCommand(OnAddSongToPlayNowCommand);
 
             SongControls = new SongControlsViewModel();
-            SongControls.SongFinishedEvent += RequestForNextSong;
-            SongQueue = new();
+            //SongControls.SongFinishedEvent += RequestForNextSong;
+            //SongQueue = new();
 
             //Sets Starting Page
             RequestForNavigation("Home");
@@ -113,31 +115,42 @@ namespace MusicPlayer.UI.Views.MainView
         {
             if (SelectedSong is not null)
             {
-                SongQueue.Enqueue(SelectedSong);
-                PlayNextSongInQueue();
+                SongControls.AddSongToQueue(SelectedSong);
             }
         }
-        internal void RequestForNextSong(object? sender, EventArgs e)
+        private void OnAddPlayListToQueueCommand()
         {
-            PlayNextSongInQueue();
-        }
-        //TODO: If Selected Song and a queue is available, what should play, if playbtn is pressed?
-        public void PlayNextSongInQueue()
-        {
-            if ( SongQueue.Count > 0)
+            if (SelectedSong is not null)
             {
-                var song = SongQueue.Dequeue();
-
-                SongControls.AddSongToPlay(song);
+                //SongControls.AddPlayListToQueue(SelectedSong);
             }
         }
-
-        private void SetSongInSongControl(Song? song)
+        private void OnAddSongToPlayNowCommand()
         {
-            SongControls.SelectedMusic = song;
+            if (SelectedSong is not null)
+            {
+                SongControls.AddSongToPlayNow(SelectedSong);
+            }
         }
+        //internal void RequestForNextSong(object? sender, EventArgs e)
+        //{
+        //    PlayNextSongInQueue();
+        //}
+        //TODO: If Selected Song and a queue is available, what should play, if playbtn is pressed?
+        //public void PlayNextSongInQueue()
+        //{
+        //    if ( SongQueue.Count > 0)
+        //    {
+        //        var song = SongQueue.Dequeue();
 
+        //        SongControls.AddSongToPlayFromQueue(song);
+        //    }
+        //}
 
+        //private void SetSongInSongControl(Song? song)
+        //{
+        //    SongControls.SelectedMusic = song;
+        //}
 
         #endregion
 
@@ -206,32 +219,32 @@ namespace MusicPlayer.UI.Views.MainView
                 if (_selectedSong != value)
                 {
                     _selectedSong = value;
-                    SetSongInSongControl(value);
+                    //SetSongInSongControl(value);
                     OnPropertyChanged();
                 }
             }
         }
 
-        private Queue<Song> _songQueue;
-        public Queue<Song> SongQueue
-        {
-            get
-            {
-                return _songQueue;
-            }
-            set
-            {
-                if (_songQueue != value)
-                {
-                    _songQueue = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        //private Queue<Song> _songQueue;
+        //public Queue<Song> SongQueue
+        //{
+        //    get
+        //    {
+        //        return _songQueue;
+        //    }
+        //    set
+        //    {
+        //        if (_songQueue != value)
+        //        {
+        //            _songQueue = value;
+        //            OnPropertyChanged();
+        //        }
+        //    }
+        //}
 
         public ObservableCollection<Song> SongQueueObs
         {
-            get { return SongQueue.ToList().ToObservableCollection(); }
+            get { return SongControls.SongQueue.ToList().ToObservableCollection(); }
         }
 
 
