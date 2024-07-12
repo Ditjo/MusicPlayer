@@ -47,8 +47,6 @@ namespace MusicPlayer.UI.Views.MainView
             AddSongToPlayNowCommand = new RelayCommand(OnAddSongToPlayNowCommand);
 
             SongControls = new SongControlsViewModel();
-            //SongControls.SongFinishedEvent += RequestForNextSong;
-            //SongQueue = new();
 
             //Sets Starting Page
             RequestForNavigation("Home");
@@ -108,7 +106,7 @@ namespace MusicPlayer.UI.Views.MainView
         public void OnClosingEvent(object? sender, CancelEventArgs e)
         {
             Debug.WriteLine("Closing Program");
-            SongControls.CleanPlayback();
+            SongControls.ClearPlayback();
         }
 
         private void OnAddSongToQueueCommand()
@@ -132,25 +130,6 @@ namespace MusicPlayer.UI.Views.MainView
                 SongControls.AddSongToPlayNow(SelectedSong);
             }
         }
-        //internal void RequestForNextSong(object? sender, EventArgs e)
-        //{
-        //    PlayNextSongInQueue();
-        //}
-        //TODO: If Selected Song and a queue is available, what should play, if playbtn is pressed?
-        //public void PlayNextSongInQueue()
-        //{
-        //    if ( SongQueue.Count > 0)
-        //    {
-        //        var song = SongQueue.Dequeue();
-
-        //        SongControls.AddSongToPlayFromQueue(song);
-        //    }
-        //}
-
-        //private void SetSongInSongControl(Song? song)
-        //{
-        //    SongControls.SelectedMusic = song;
-        //}
 
         #endregion
 
@@ -219,29 +198,12 @@ namespace MusicPlayer.UI.Views.MainView
                 if (_selectedSong != value)
                 {
                     _selectedSong = value;
-                    //SetSongInSongControl(value);
                     OnPropertyChanged();
                 }
             }
         }
 
-        //private Queue<Song> _songQueue;
-        //public Queue<Song> SongQueue
-        //{
-        //    get
-        //    {
-        //        return _songQueue;
-        //    }
-        //    set
-        //    {
-        //        if (_songQueue != value)
-        //        {
-        //            _songQueue = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
+        //TODO: Update this when SongQueue is updated
         public ObservableCollection<Song> SongQueueObs
         {
             get { return SongControls.SongQueue.ToList().ToObservableCollection(); }

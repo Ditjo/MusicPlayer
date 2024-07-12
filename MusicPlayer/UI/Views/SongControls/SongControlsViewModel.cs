@@ -22,8 +22,6 @@ namespace MusicPlayer.UI.Views.SongControls
         private WaveOutEvent? outputDevice;
         private AudioFileReader? audioFile;
 
-        public event EventHandler SongFinishedEvent;
-
         private readonly DispatcherTimer musicTimer;
 
         public ICommand NavigationCommand { get; set; }
@@ -49,14 +47,9 @@ namespace MusicPlayer.UI.Views.SongControls
             PlayBtn = "Play";
         }
 
-        protected void OnSongFinishedEvent()
-        {
-            SongFinishedEvent.Invoke(this, new EventArgs());
-        }
-
         #region Commands
 
-        public void PlayMusic()
+        private void PlayMusic()
         {
             Debug.WriteLine("Playing Music...");
             if (outputDevice == null) return;
@@ -76,12 +69,12 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        public bool CanPlayMusic()
+        private bool CanPlayMusic()
         {
             return SongPlaying is not null && System.IO.File.Exists(SongPlaying.Url);
         }
 
-        public void StopMusic()
+        private void StopMusic()
         {
             Debug.WriteLine("Stopped Music");
 
@@ -90,13 +83,13 @@ namespace MusicPlayer.UI.Views.SongControls
             musicTimer.Stop();
         }
 
-        public void OnRewindMusicCommand()
+        private void OnRewindMusicCommand()
         {
             if (audioFile == null) return;
             audioFile.Position = 0;
         }
 
-        public void OnSkipTimeInMusicCommand(object sec)
+        private void OnSkipTimeInMusicCommand(object sec)
         {
             if (audioFile != null && sec != null)
             {
@@ -104,7 +97,7 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        public void SetTime(TimeSpan time)
+        private void SetTime(TimeSpan time)
         {
             if (audioFile != null)
             {
@@ -112,15 +105,26 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
+        private bool isDragging = false;
+        private void TimerTick(object sender, EventArgs e)
+        {
+            if (audioFile is not null && !isDragging)
+            {
+                CurrentTime = audioFile.CurrentTime;
+            }
+        }
+
+        #endregion
+
+        #region SongQueueControls
+
+        //Below Commands used to set song and start next song.
+
         private void OnPlaybackStopped(object sender, StoppedEventArgs args)
         {
-            //If music stopped on it's own. CleanPlayback.
-            //If more in playlist play that.
             if (musicNotStoppedByPerson)
             {
-                //CleanPlayback();
                 PlayNextSongFromQueue();
-                //Raise Event for next Song
             }
             PlayBtn = "Play";
             musicNotStoppedByPerson = true;
@@ -131,14 +135,14 @@ namespace MusicPlayer.UI.Views.SongControls
             CleanPlayback();
             if (SongQueue is null || SongQueue.Count == 0) return;
 
-            var song = SongQueue.Dequeue();
-            InitSongToPlay(song);
+            SongPlaying = SongQueue.Dequeue();
+            //TODO: Add Song to Collection of Songs that have been played.
+            InitSongToPlay(SongPlaying);
             PlayMusic();
         }
         
-        public void CleanPlayback()
+        private void CleanPlayback()
         {
-
             if (outputDevice != null)
             {
                 if (outputDevice.PlaybackState == PlaybackState.Playing)
@@ -157,7 +161,7 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        public void InitSongToPlay(Song song)
+        private void InitSongToPlay(Song song)
         {
             CleanPlayback();
             if (outputDevice == null)
@@ -172,17 +176,9 @@ namespace MusicPlayer.UI.Views.SongControls
             }
             TimeOffSong = audioFile is null ? TimeSpan.Zero : audioFile.TotalTime;
         }
+        #endregion
 
-
-        public bool isDragging = false;
-        private void TimerTick(object sender, EventArgs e)
-        {
-            if (audioFile is not null && !isDragging)
-            {
-                CurrentTime = audioFile.CurrentTime;
-            }
-        }
-
+        #region Public Methods
 
         public void AddSongToPlayNow(Song song)
         {
@@ -211,6 +207,11 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
+        public void ClearPlayback()
+        {
+            CleanPlayback();
+        }
+
         #endregion
 
         #region Properties
@@ -227,7 +228,6 @@ namespace MusicPlayer.UI.Views.SongControls
                 if (_selectedMusic != value)
                 {
                     _selectedMusic = value;
-                    if (value is not null) InitSongToPlay(value);
                     OnPropertyChanged();
                 }
             }
