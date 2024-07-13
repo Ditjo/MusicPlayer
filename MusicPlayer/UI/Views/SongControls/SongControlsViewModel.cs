@@ -127,8 +127,11 @@ namespace MusicPlayer.UI.Views.SongControls
             {
                 PlayNextSongFromQueue();
             }
-            PlayBtn = "Play";
-            musicNotStoppedByPerson = true;
+            else
+            {
+                PlayBtn = "Play";
+                musicNotStoppedByPerson = true;
+            }
         }
 
         private void PlayNextSongFromQueue()
