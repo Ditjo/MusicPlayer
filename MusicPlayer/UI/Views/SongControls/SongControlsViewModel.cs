@@ -3,6 +3,7 @@ using MusicPlayer.Services.Command;
 using MusicPlayer.UI.Base;
 using NAudio.Wave;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -97,7 +98,7 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        private void SetTime(TimeSpan time)
+        public void SetTime(TimeSpan time)
         {
             if (audioFile != null)
             {
@@ -105,7 +106,7 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        private bool isDragging = false;
+        public bool isDragging = false;
         private void TimerTick(object sender, EventArgs e)
         {
             if (audioFile is not null && !isDragging)
@@ -140,7 +141,7 @@ namespace MusicPlayer.UI.Views.SongControls
             InitSongToPlay(SongPlaying);
             PlayMusic();
         }
-        
+
         private void CleanPlayback()
         {
             if (outputDevice != null)
@@ -180,30 +181,48 @@ namespace MusicPlayer.UI.Views.SongControls
 
         #region Public Methods
 
-        public void AddSongToPlayNow(Song song)
+        public void PlayNow(Song song)
         {
             SongQueue.Clear();
             SongQueue.Enqueue(song);
             PlayNextSongFromQueue();
         }
 
-        public void AddSongToQueue(Song song)
+        public void PlayNow(IEnumerable<Song> songs)
+        {
+            SongQueue.Clear();
+            if (songs is null || songs.Any()) return;
+
+            foreach (Song s in songs)
+            {
+                SongQueue.Enqueue(s);
+            }
+
+            PlayNextSongFromQueue();
+        }
+
+        public void AddToQueue(Song song)
         {
             SongQueue.Enqueue(song);
 
-            if(outputDevice is null)
+            if (outputDevice is null)
             {
                 PlayNextSongFromQueue();
             }
         }
 
-        public void AddPlayListToQueue(List<Song> songs)
+        public void AddToQueue(IEnumerable<Song> songs)
         {
-            if (songs is null || songs.Count == 0) return;
+            if (songs is null || songs.Any()) return;
 
             foreach (Song s in songs)
             {
                 SongQueue.Enqueue(s);
+            }
+
+            if (outputDevice is null)
+            {
+                PlayNextSongFromQueue();
             }
         }
 
