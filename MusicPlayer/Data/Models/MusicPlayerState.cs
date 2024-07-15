@@ -8,7 +8,7 @@ namespace MusicPlayer.Data.Models
 {
     public class MusicPlayerState
     {
-        public Song CurrentSong { get; set; }
+        public Song? CurrentSong { get; set; }
         public Queue<Song> SongQueue { get; set; }
         public Stack<Song> PastSong { get; set; }
 
