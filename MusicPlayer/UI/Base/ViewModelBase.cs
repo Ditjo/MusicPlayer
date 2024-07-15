@@ -1,4 +1,6 @@
-﻿using MusicPlayer.Services.Navigation;
+﻿using MusicPlayer.Data.Models;
+using MusicPlayer.Services.Helpers;
+using MusicPlayer.Services.Navigation;
 using MusicPlayer.UI.Views.MainView;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ namespace MusicPlayer.UI.Base
 {
     public class ViewModelBase : INotifyPropertyChanged, IRequestForNavigationEvent
     {
+        private string statePath = "state.json";
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -20,6 +23,11 @@ namespace MusicPlayer.UI.Base
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void SaveStateOfMusicPlayer(MusicPlayerState state)
+        {
+            FileHandler.SaveToJSON<MusicPlayerState>(state, statePath);
         }
 
         private string _header;
