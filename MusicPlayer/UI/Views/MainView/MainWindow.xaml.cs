@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using MusicPlayer.UI.Views.MainView;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Media;
 using System.Text;
 using System.Windows;
@@ -24,9 +26,23 @@ namespace MusicPlayer
         public MainWindow()
         {
             InitializeComponent();
+            OnStartUp();
             _viewModel = new MainViewModel();
-            Closing += _viewModel.OnClosingEvent;
+            Closing += OnClosingEvent;
             DataContext = _viewModel;
+
         }
+
+        public void OnStartUp()
+        {
+
+        }
+
+        public void OnClosingEvent(object? sender, CancelEventArgs e)
+        {
+            Debug.WriteLine("Closing Program");
+            _viewModel.SongControls.ClearPlayback();
+        }
+        
     }
 }

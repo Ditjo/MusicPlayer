@@ -103,12 +103,6 @@ namespace MusicPlayer.UI.Views.MainView
             RequestForNavigation(obj.ToString());
         }
 
-        public void OnClosingEvent(object? sender, CancelEventArgs e)
-        {
-            Debug.WriteLine("Closing Program");
-            SongControls.ClearPlayback();
-        }
-
         private void OnAddSongToQueueCommand()
         {
             if (SelectedSong is not null)
