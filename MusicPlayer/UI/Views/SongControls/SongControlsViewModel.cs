@@ -1,5 +1,6 @@
 ﻿using MusicPlayer.Data.Models;
 using MusicPlayer.Services.Command;
+using MusicPlayer.Services.Helpers;
 using MusicPlayer.UI.Base;
 using NAudio.Wave;
 using System;
@@ -19,6 +20,8 @@ namespace MusicPlayer.UI.Views.SongControls
 {
     public class SongControlsViewModel : ViewModelBase
     {
+        private MusicPlayerState _state;
+
         private bool musicNotStoppedByPerson = true;
         private WaveOutEvent? outputDevice;
         private AudioFileReader? audioFile;
@@ -31,8 +34,10 @@ namespace MusicPlayer.UI.Views.SongControls
         public ICommand RewindMusicCommand { get; set; }
         public ICommand SkipTimeInMusicCommand { get; set; }
 
-        public SongControlsViewModel()
+        public SongControlsViewModel(MusicPlayerState state)
         {
+            _state = state;
+
             PlayMusicCommand = new RelayCommand(PlayMusic, CanPlayMusic);
             StopMusicCommand = new RelayCommand(StopMusic);
             RewindMusicCommand = new RelayCommand(OnRewindMusicCommand);
@@ -42,10 +47,22 @@ namespace MusicPlayer.UI.Views.SongControls
             musicTimer.Interval = TimeSpan.FromMilliseconds(500);
             musicTimer.Tick += TimerTick;
 
-            SongQueue = new();
+            //SongQueue = new();
+            InitState();
 
             OutputVolume = 100;
             PlayBtn = "Play";
+            
+        }
+
+        private void InitState()
+        {
+            if (_state != null)
+            {
+                SongPlaying = _state.CurrentSong;
+                SongQueue = _state.SongQueue ?? new Queue<Song>();
+                PastSongs = _state.PastSong ?? new Stack<Song>();
+            }
         }
 
         #region Commands
@@ -53,6 +70,7 @@ namespace MusicPlayer.UI.Views.SongControls
         private void PlayMusic()
         {
             Debug.WriteLine("Playing Music...");
+            if (SongPlaying != null && outputDevice == null) InitSongToPlay(SongPlaying);
             if (outputDevice == null) return;
 
             if (outputDevice.PlaybackState == PlaybackState.Playing)
@@ -140,6 +158,7 @@ namespace MusicPlayer.UI.Views.SongControls
             if (SongQueue is null || SongQueue.Count == 0) return;
 
             SongPlaying = SongQueue.Dequeue();
+            GetStateOfMusicPlayer();
             //TODO: Add Song to Collection of Songs that have been played.
             InitSongToPlay(SongPlaying);
             PlayMusic();
@@ -182,6 +201,19 @@ namespace MusicPlayer.UI.Views.SongControls
         }
         #endregion
 
+        #region SaveStateOfMusicPlayer
+
+        private void GetStateOfMusicPlayer()
+        {
+            _state.CurrentSong = SongPlaying;
+            _state.SongQueue = SongQueue;
+            _state.PastSong = PastSongs;
+
+            SaveStateOfMusicPlayer(_state);
+        }
+
+        #endregion
+
         #region Public Methods
 
         public void PlayNow(Song song)
@@ -212,6 +244,10 @@ namespace MusicPlayer.UI.Views.SongControls
             {
                 PlayNextSongFromQueue();
             }
+            else
+            {
+                GetStateOfMusicPlayer();
+            }
         }
 
         public void AddToQueue(IEnumerable<Song> songs)
@@ -226,6 +262,10 @@ namespace MusicPlayer.UI.Views.SongControls
             if (outputDevice is null)
             {
                 PlayNextSongFromQueue();
+            }
+            else
+            {
+                GetStateOfMusicPlayer();
             }
         }
 
@@ -347,6 +387,23 @@ namespace MusicPlayer.UI.Views.SongControls
                 if (_songQueue != value)
                 {
                     _songQueue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Stack<Song> _pastSongs;
+        public Stack<Song> PastSongs
+        {
+            get
+            {
+                return _pastSongs;
+            }
+            set
+            {
+                if (_pastSongs != value)
+                {
+                    _pastSongs = value;
                     OnPropertyChanged();
                 }
             }

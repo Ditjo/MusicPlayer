@@ -28,14 +28,17 @@ namespace MusicPlayer.UI.Views.MainView
     internal class MainViewModel : ViewModelBase
     {
         private static string staticPath = "";
+        private MusicPlayerState _state;
         FileWorker fileWorker;
 
         public ICommand NavigationCommand { get; set; }
         public ICommand AddSongToQueueCommand { get; set; }
         public ICommand AddSongToPlayNowCommand { get; set; }
 
-        public MainViewModel()
+        public MainViewModel(MusicPlayerState state)
         {
+            _state = state;
+
             staticPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
             fileWorker = new(staticPath);
@@ -46,7 +49,7 @@ namespace MusicPlayer.UI.Views.MainView
             AddSongToQueueCommand = new RelayCommand(OnAddSongToQueueCommand);
             AddSongToPlayNowCommand = new RelayCommand(OnAddSongToPlayNowCommand);
 
-            SongControls = new SongControlsViewModel();
+            SongControls = new SongControlsViewModel(_state);
 
             //Sets Starting Page
             RequestForNavigation("Home");
