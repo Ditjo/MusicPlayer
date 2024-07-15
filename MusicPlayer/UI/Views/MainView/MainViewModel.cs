@@ -107,7 +107,7 @@ namespace MusicPlayer.UI.Views.MainView
         {
             if (SelectedSong is not null)
             {
-                SongControls.AddSongToQueue(SelectedSong);
+                SongControls.AddToQueue(SelectedSong);
             }
         }
         private void OnAddPlayListToQueueCommand()
@@ -121,7 +121,7 @@ namespace MusicPlayer.UI.Views.MainView
         {
             if (SelectedSong is not null)
             {
-                SongControls.AddSongToPlayNow(SelectedSong);
+                SongControls.PlayNow(SelectedSong);
             }
         }
 
