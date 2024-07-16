@@ -129,6 +129,7 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             //TODO: If Playlist is done playing, you wont be able to go back. Change behavior?
             if(audioFile == null) return;
+            if (PastSongs.Count == 0) return;
 
             if(audioFile.CurrentTime > new TimeSpan(0,0,5) || PastSongs.Count == 0)
             {
