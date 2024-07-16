@@ -41,11 +41,11 @@
             <StackPanel Grid.Column="0" Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,3">
                     <TextBlock Text="Song: "/>
-                    <TextBlock Text="{Binding SongPlaying.SongName}"/>
+                    <TextBlock Text="{Binding CurrentSong.SongName}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,3">
                     <TextBlock Text="Artist: "/>
-                    <TextBlock Text="{Binding SongPlaying.Artist}"/>
+                    <TextBlock Text="{Binding CurrentSong.Artist}"/>
                 </StackPanel>
             </StackPanel>
 

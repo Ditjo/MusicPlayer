@@ -27,7 +27,7 @@
                     FontSize="32"
                     HorizontalAlignment="Center"/>
 
-                <ListView ItemsSource="{Binding DataContext.SongQueueObs,                 
+                <ListView ItemsSource="{Binding DataContext.SongControls.SongQueue,                 
                 RelativeSource={RelativeSource 
                 Mode=FindAncestor, 
                 AncestorType=Window}}">

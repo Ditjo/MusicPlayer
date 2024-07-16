@@ -6,6 +6,7 @@ using NAudio.Wave;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,6 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using TagLib.Mpeg;
 
 namespace MusicPlayer.UI.Views.SongControls
 {
@@ -30,7 +30,6 @@ namespace MusicPlayer.UI.Views.SongControls
 
         public ICommand NavigationCommand { get; set; }
         public ICommand PlayMusicCommand { get; set; }
-        public ICommand StopMusicCommand { get; set; }
         public ICommand RewindMusicCommand { get; set; }
         public ICommand SkipTimeInMusicCommand { get; set; }
 
@@ -39,15 +38,13 @@ namespace MusicPlayer.UI.Views.SongControls
             _state = state;
 
             PlayMusicCommand = new RelayCommand(PlayMusic, CanPlayMusic);
-            StopMusicCommand = new RelayCommand(StopMusic);
             RewindMusicCommand = new RelayCommand(OnRewindMusicCommand);
             SkipTimeInMusicCommand = new RelayCommand<object>(OnSkipTimeInMusicCommand);
 
             musicTimer = new DispatcherTimer();
-            musicTimer.Interval = TimeSpan.FromMilliseconds(500);
+            musicTimer.Interval = TimeSpan.FromMilliseconds(1000);
             musicTimer.Tick += TimerTick;
 
-            //SongQueue = new();
             InitState();
 
             OutputVolume = 100;
@@ -59,7 +56,7 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             if (_state != null)
             {
-                SongPlaying = _state.CurrentSong;
+                CurrentSong = _state.CurrentSong;
                 SongQueue = _state.SongQueue ?? new Queue<Song>();
                 PastSongs = _state.PastSong ?? new Stack<Song>();
             }
@@ -70,7 +67,7 @@ namespace MusicPlayer.UI.Views.SongControls
         private void PlayMusic()
         {
             Debug.WriteLine("Playing Music...");
-            if (SongPlaying != null && outputDevice == null) InitSongToPlay(SongPlaying);
+            if (CurrentSong != null && outputDevice == null) InitSongToPlay(CurrentSong);
             if (outputDevice == null) return;
 
             if (outputDevice.PlaybackState == PlaybackState.Playing)
@@ -90,16 +87,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private bool CanPlayMusic()
         {
-            return SongPlaying is not null && System.IO.File.Exists(SongPlaying.Url);
-        }
-
-        private void StopMusic()
-        {
-            Debug.WriteLine("Stopped Music");
-
-            musicNotStoppedByPerson = false;
-            outputDevice?.Stop();
-            musicTimer.Stop();
+            return CurrentSong is not null && System.IO.File.Exists(CurrentSong.Url);
         }
 
         private void OnRewindMusicCommand()
@@ -143,6 +131,7 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             if (musicNotStoppedByPerson)
             {
+                SongQueue = RemoveSongFromQueue(SongQueue);
                 PlayNextSongFromQueue();
             }
             else
@@ -157,10 +146,13 @@ namespace MusicPlayer.UI.Views.SongControls
             CleanPlayback();
             if (SongQueue is null || SongQueue.Count == 0) return;
 
-            SongPlaying = SongQueue.Dequeue();
+            if(CurrentSong is not null) PastSongs.Push(CurrentSong);
+
+            CurrentSong = SongQueue.Peek();
+
             GetStateOfMusicPlayer();
-            //TODO: Add Song to Collection of Songs that have been played.
-            InitSongToPlay(SongPlaying);
+
+            InitSongToPlay(CurrentSong);
             PlayMusic();
         }
 
@@ -205,7 +197,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private void GetStateOfMusicPlayer()
         {
-            _state.CurrentSong = SongPlaying;
+            _state.CurrentSong = CurrentSong;
             _state.SongQueue = SongQueue;
             _state.PastSong = PastSongs;
 
@@ -219,18 +211,20 @@ namespace MusicPlayer.UI.Views.SongControls
         public void PlayNow(Song song)
         {
             SongQueue.Clear();
-            SongQueue.Enqueue(song);
+            PastSongs.Clear();
+            SongQueue = AddSongToQueue(SongQueue, song);
             PlayNextSongFromQueue();
         }
 
         public void PlayNow(IEnumerable<Song> songs)
         {
             SongQueue.Clear();
+            PastSongs.Clear();
             if (songs is null || songs.Any()) return;
 
-            foreach (Song s in songs)
+            foreach (Song song in songs)
             {
-                SongQueue.Enqueue(s);
+                SongQueue = AddSongToQueue(SongQueue, song);
             }
 
             PlayNextSongFromQueue();
@@ -238,7 +232,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         public void AddToQueue(Song song)
         {
-            SongQueue.Enqueue(song);
+            SongQueue = AddSongToQueue(SongQueue, song);
 
             if (outputDevice is null)
             {
@@ -254,9 +248,9 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             if (songs is null || songs.Any()) return;
 
-            foreach (Song s in songs)
+            foreach (Song song in songs)
             {
-                SongQueue.Enqueue(s);
+                SongQueue = AddSongToQueue(SongQueue, song);
             }
 
             if (outputDevice is null)
@@ -276,20 +270,46 @@ namespace MusicPlayer.UI.Views.SongControls
 
         #endregion
 
+        #region AddToQueueMethods
+
+        private static Queue<Song> AddSongToQueue(Queue<Song> songs, Song song)
+        {
+            Queue<Song> list = new();
+            foreach (Song s in songs)
+            {
+                list.Enqueue(s);
+            }
+            list.Enqueue(song);
+            return list;
+        }
+
+        private static Queue<Song> RemoveSongFromQueue(Queue<Song> songs)
+        {
+            songs.Dequeue();
+            Queue<Song> list = new();
+            foreach (Song song in songs)
+            {
+                list.Enqueue(song);
+            }
+            return list;
+        }
+
+        #endregion
+
         #region Properties
 
-        private Song? _selectedMusic;
-        public Song? SongPlaying
+        private Song? _currentSong;
+        public Song? CurrentSong
         {
             get
             {
-                return _selectedMusic;
+                return _currentSong;
             }
             set
             {
-                if (_selectedMusic != value)
+                if (_currentSong != value)
                 {
-                    _selectedMusic = value;
+                    _currentSong = value;
                     OnPropertyChanged();
                 }
             }
