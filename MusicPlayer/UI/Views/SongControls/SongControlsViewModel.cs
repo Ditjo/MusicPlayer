@@ -127,6 +127,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private void OnPreviousSongCommand()
         {
+            //TODO: If Playlist is done playing, you wont be able to go back. Change behavior?
             if(audioFile == null) return;
 
             if(audioFile.CurrentTime > new TimeSpan(0,0,5) || PastSongs.Count == 0)
@@ -147,7 +148,8 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private void OnNextSongCommand()
         {
-
+            SongQueue = RemoveFirstInLineSongFromQueue(SongQueue);
+            PlayNextSongFromQueue();
         }
 
         private bool CanNextSongCommand()
