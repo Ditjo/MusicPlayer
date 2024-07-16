@@ -89,6 +89,7 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             Debug.WriteLine("Playing Music...");
             if (CurrentSong != null && outputDevice == null) InitSongToPlay(CurrentSong);
+            if( CurrentSong == null && PastSongs.Count > 0) InitSongToPlay(PastSongs.Pop()); 
             if (outputDevice == null) return;
 
             if (outputDevice.PlaybackState == PlaybackState.Playing)
