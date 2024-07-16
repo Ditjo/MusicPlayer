@@ -129,14 +129,14 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             if(audioFile == null) return;
 
-            if(audioFile.CurrentTime > new TimeSpan(0,0,5))
+            if(audioFile.CurrentTime > new TimeSpan(0,0,5) || PastSongs.Count == 0)
             {
                 audioFile.Position = 0;
             }
             else
             {
                 SongQueue = ReturnPreviousSongToQueue(SongQueue, PastSongs.Pop());
-                PlayNextSongFromQueue();
+                SetUpSongToPlay();
             }
         }
 
@@ -177,11 +177,15 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private void PlayNextSongFromQueue()
         {
+            if(CurrentSong is not null) 
+                PastSongs.Push(CurrentSong);
+            SetUpSongToPlay();
+        }
+
+        private void SetUpSongToPlay()
+        {
             CleanPlayback();
             if (SongQueue is null || SongQueue.Count == 0) return;
-
-            //TODO: Can't push song to PastSongs if it is a previous song that are now playing.
-            if(CurrentSong is not null) PastSongs.Push(CurrentSong);
 
             CurrentSong = SongQueue.Peek();
 
