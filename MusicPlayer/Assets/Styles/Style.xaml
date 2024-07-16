@@ -3,4 +3,7 @@
     <Style TargetType="TextBlock" x:Key="SongViewTextStyle">
         <Setter Property="FontSize" Value="20"/>
     </Style>
+    <Style TargetType="Button" x:Key="SongControlBtn">
+        <Setter Property="Margin" Value="5"/>
+    </Style>
 </ResourceDictionary>
