@@ -32,6 +32,8 @@ namespace MusicPlayer.UI.Views.SongControls
         public ICommand PlayMusicCommand { get; set; }
         public ICommand RewindMusicCommand { get; set; }
         public ICommand SkipTimeInMusicCommand { get; set; }
+        public ICommand PreviousSongCommand { get; set; }
+        public ICommand NextSongCommand { get; set; }
 
         public SongControlsViewModel(MusicPlayerState state)
         {
@@ -40,6 +42,8 @@ namespace MusicPlayer.UI.Views.SongControls
             PlayMusicCommand = new RelayCommand(PlayMusic, CanPlayMusic);
             RewindMusicCommand = new RelayCommand(OnRewindMusicCommand);
             SkipTimeInMusicCommand = new RelayCommand<object>(OnSkipTimeInMusicCommand);
+            PreviousSongCommand = new RelayCommand(OnPreviousSongCommand, CanPreviousSongCommand);
+            NextSongCommand = new RelayCommand(OnNextSongCommand, CanNextSongCommand);
 
             musicTimer = new DispatcherTimer();
             musicTimer.Interval = TimeSpan.FromMilliseconds(1000);
@@ -59,6 +63,23 @@ namespace MusicPlayer.UI.Views.SongControls
                 CurrentSong = _state.CurrentSong;
                 SongQueue = _state.SongQueue ?? new Queue<Song>();
                 PastSongs = _state.PastSong ?? new Stack<Song>();
+            }
+        }
+
+        public void SetTime(TimeSpan time)
+        {
+            if (audioFile != null)
+            {
+                audioFile.CurrentTime = time;
+            }
+        }
+
+        public bool isDragging = false;
+        private void TimerTick(object sender, EventArgs e)
+        {
+            if (audioFile is not null && !isDragging)
+            {
+                CurrentTime = audioFile.CurrentTime;
             }
         }
 
@@ -104,21 +125,34 @@ namespace MusicPlayer.UI.Views.SongControls
             }
         }
 
-        public void SetTime(TimeSpan time)
+        private void OnPreviousSongCommand()
         {
-            if (audioFile != null)
+            if(audioFile == null) return;
+
+            if(audioFile.CurrentTime > new TimeSpan(0,0,5))
             {
-                audioFile.CurrentTime = time;
+                audioFile.Position = 0;
+            }
+            else
+            {
+                SongQueue = ReturnPreviousSongToQueue(SongQueue, PastSongs.Pop());
+                PlayNextSongFromQueue();
             }
         }
 
-        public bool isDragging = false;
-        private void TimerTick(object sender, EventArgs e)
+        private bool CanPreviousSongCommand()
         {
-            if (audioFile is not null && !isDragging)
-            {
-                CurrentTime = audioFile.CurrentTime;
-            }
+            return true;
+        }
+
+        private void OnNextSongCommand()
+        {
+
+        }
+
+        private bool CanNextSongCommand()
+        {
+            return true;
         }
 
         #endregion
@@ -131,7 +165,7 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             if (musicNotStoppedByPerson)
             {
-                SongQueue = RemoveSongFromQueue(SongQueue);
+                SongQueue = RemoveFirstInLineSongFromQueue(SongQueue);
                 PlayNextSongFromQueue();
             }
             else
@@ -146,6 +180,7 @@ namespace MusicPlayer.UI.Views.SongControls
             CleanPlayback();
             if (SongQueue is null || SongQueue.Count == 0) return;
 
+            //TODO: Can't push song to PastSongs if it is a previous song that are now playing.
             if(CurrentSong is not null) PastSongs.Push(CurrentSong);
 
             CurrentSong = SongQueue.Peek();
@@ -270,12 +305,12 @@ namespace MusicPlayer.UI.Views.SongControls
 
         #endregion
 
-        #region AddToQueueMethods
+        #region WorkQueueMethods
 
-        private static Queue<Song> AddSongToQueue(Queue<Song> songs, Song song)
+        private static Queue<Song> AddSongToQueue(Queue<Song> queue, Song song)
         {
             Queue<Song> list = new();
-            foreach (Song s in songs)
+            foreach (Song s in queue)
             {
                 list.Enqueue(s);
             }
@@ -283,15 +318,31 @@ namespace MusicPlayer.UI.Views.SongControls
             return list;
         }
 
-        private static Queue<Song> RemoveSongFromQueue(Queue<Song> songs)
+        private static Queue<Song> RemoveFirstInLineSongFromQueue(Queue<Song> queue)
         {
-            songs.Dequeue();
+            queue.Dequeue();
             Queue<Song> list = new();
-            foreach (Song song in songs)
+            foreach (Song song in queue)
             {
                 list.Enqueue(song);
             }
             return list;
+        }
+
+        private static Queue<Song> ReturnPreviousSongToQueue(Queue<Song> queue, Song previousSong)
+        {
+            Queue<Song> list = new();
+            list.Enqueue(previousSong);
+            foreach (Song s in queue)
+            {
+                list.Enqueue(s);
+            }
+            return list;
+        }
+
+        private static Queue<Song> TakeNextSongInQueue()
+        {
+            return null;
         }
 
         #endregion

@@ -51,9 +51,11 @@
 
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Content="Rewind" Style="{StaticResource SongControlBtn}" Command="{Binding RewindMusicCommand}"/>
-                <Button Content="&lt;" Style="{StaticResource SongControlBtn}" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>
+                <!--<Button Content="&lt;" Style="{StaticResource SongControlBtn}" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="-5"/>-->
+                <Button Content="&lt;" Style="{StaticResource SongControlBtn}" Command="{Binding PreviousSongCommand}"/>
                 <Button Content="{Binding PlayBtn}" Style="{StaticResource SongControlBtn}" Command="{Binding PlayMusicCommand}"/>
-                <Button Content="&gt;" Style="{StaticResource SongControlBtn}" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5"/>
+                <!--<Button Content="&gt;" Style="{StaticResource SongControlBtn}" Command="{Binding SkipTimeInMusicCommand}" CommandParameter="5"/>-->
+                <Button Content="&gt;" Style="{StaticResource SongControlBtn}" Command="{Binding NextSongCommand}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" 
                         Orientation="Horizontal"
