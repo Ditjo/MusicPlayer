@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="UI\Common\Controls\" />
     <Folder Include="UI\Components\" />
   </ItemGroup>
 
