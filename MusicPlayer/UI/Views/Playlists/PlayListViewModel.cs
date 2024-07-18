@@ -18,47 +18,42 @@ namespace MusicPlayer.UI.Views.Playlists
 {
     public class PlayListViewModel : ViewModelBase
     {
-        //private static string staticPath = "";
+        private ListOfPlayLists _listOfplaylists;
 
-        //FileWorker fileWorker;
-
-        public PlayListViewModel()
+        public PlayListViewModel(ListOfPlayLists playlists)
         {
-            //staticPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            _listOfplaylists = playlists;
 
-            //fileWorker = new(staticPath);
+            InitPlaylists();
+        }
 
-            //LoadData();
+        private void InitPlaylists()
+        {
+            Playlists = _listOfplaylists;
         }
 
         #region Commands
-
-        //public void LoadData()
-        //{
-        //    Songs = fileWorker.GetAllSongs();
-        //}
 
         #endregion
 
         #region Properties
 
-        //private List<Song>? _songs;
-
-        //public List<Song>? Songs
-        //{
-        //    get 
-        //    {
-        //        return _songs; 
-        //    }
-        //    set 
-        //    {
-        //        if (_songs != value)
-        //        {
-        //            _songs = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
+        private ListOfPlayLists _playlists;
+        public ListOfPlayLists Playlists
+        {
+            get 
+            {
+                return _playlists; 
+            }
+            set 
+            {
+                if (_playlists != value)
+                {
+                    _playlists = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
 
         #endregion

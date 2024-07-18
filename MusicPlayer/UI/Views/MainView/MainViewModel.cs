@@ -29,15 +29,17 @@ namespace MusicPlayer.UI.Views.MainView
     {
         private static string staticPath = "";
         private MusicPlayerState _state;
+        private ListOfPlayLists _playlists;
         FileWorker fileWorker;
 
         public ICommand NavigationCommand { get; set; }
         public ICommand AddSongToQueueCommand { get; set; }
         public ICommand AddSongToPlayNowCommand { get; set; }
 
-        public MainViewModel(MusicPlayerState state)
+        public MainViewModel(MusicPlayerState state, ListOfPlayLists playlists)
         {
             _state = state;
+            _playlists = playlists;
 
             staticPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
@@ -78,7 +80,7 @@ namespace MusicPlayer.UI.Views.MainView
                     SelectedViewModel = viewModel;
                     break;
                 case "Playlist":
-                    viewModel = new PlayListViewModel();
+                    viewModel = new PlayListViewModel(_playlists);
                     viewModel.RequestForNavigationEvent += RequestForNavigation;
                     viewModel.Header = "Playlists";
                     SelectedViewModel = viewModel;

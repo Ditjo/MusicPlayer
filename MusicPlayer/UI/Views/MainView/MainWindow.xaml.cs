@@ -25,32 +25,44 @@ namespace MusicPlayer
     public partial class MainWindow : Window
     {
         private string statePath = "state.json";
+        private string playlistPath = "playlists.json";
 
         private MainViewModel _viewModel;
         private MusicPlayerState _state;
+        private ListOfPlayLists _playlists;
 
         public MainWindow()
         {
             InitializeComponent();
             OnStartUp();
-            _viewModel = new MainViewModel(_state);
+            _viewModel = new MainViewModel(_state, _playlists);
             Closing += OnClosingEvent;
             DataContext = _viewModel;
         }
 
         public void OnStartUp()
         {
-            var state = FileHandler.LoadFromJSON<MusicPlayerState>(statePath);
-            _state = state is null ? new MusicPlayerState() : state;
+            GetStateOfMusicplayer();
+            GetPlaylists();
         }
 
         public void OnClosingEvent(object? sender, CancelEventArgs e)
         {
-            //Debug.WriteLine(_state.CurrentSong.SongName);
             Debug.WriteLine("Closing Program");
             _viewModel.SongControls.ClearPlayback();
             //FileHandler.SaveToJSON<MusicPlayerState>(_state ,statePath);
         }
-        
+
+        private void GetStateOfMusicplayer()
+        {
+            var state = FileHandler.LoadFromJSON<MusicPlayerState>(statePath);
+            _state = state is null ? new MusicPlayerState() : state;
+        }
+
+        private void GetPlaylists()
+        {
+            var playlists = FileHandler.LoadFromJSON<ListOfPlayLists>(playlistPath);
+            _playlists = playlists is null ? new ListOfPlayLists() : playlists;
+        }
     }
 }
