@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
@@ -27,11 +27,11 @@
                     FontSize="32"
                     HorizontalAlignment="Center"/>
 
-                <ListView ItemsSource="{Binding DataContext.SongControls.SongQueue,                 
+                <ItemsControl ItemsSource="{Binding DataContext.SongControls.SongQueue,                 
                 RelativeSource={RelativeSource 
                 Mode=FindAncestor, 
                 AncestorType=Window}}">
-                    <ListView.ItemTemplate>
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border>
                                 <Grid>
@@ -59,8 +59,8 @@
                                 </Grid>
                             </Border>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Border>
 

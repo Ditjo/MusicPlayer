@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MusicPlayer"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200"
+        Title="MainWindow" Height="800" Width="800"
         >
     <Grid>
         <Grid.ColumnDefinitions>
