@@ -7,7 +7,40 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <Button Content="Create Playlist" Command="{Binding CreateNewPlaylistCommand}"/>
+        </DockPanel>
+        <Border Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Playlists}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="1">
+                                    <TextBlock Text="{Binding Title}"/>
+                                    <Menu>
+                                        <MenuItem Header="...">
+                                            <MenuItem Header="Play Now"/>
+                                            <MenuItem Header="Shuffle"/>
+                                            <MenuItem Header="Queue up"/>
+                                            <MenuItem Header="Delete"/>
+                                        </MenuItem>
+                                    </Menu>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
 
     </Grid>
 </UserControl>

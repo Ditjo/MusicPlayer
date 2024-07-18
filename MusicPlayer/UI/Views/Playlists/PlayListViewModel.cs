@@ -20,9 +20,13 @@ namespace MusicPlayer.UI.Views.Playlists
     {
         private ListOfPlayLists _listOfplaylists;
 
+        public ICommand CreateNewPlaylistCommand { get; set; }
+
         public PlayListViewModel(ListOfPlayLists playlists)
         {
             _listOfplaylists = playlists;
+
+            CreateNewPlaylistCommand = new RelayCommand(OnCreateNewPlyslistCommand, CanCreateNewPlaylistCommand);
 
             InitPlaylists();
         }
@@ -33,6 +37,15 @@ namespace MusicPlayer.UI.Views.Playlists
         }
 
         #region Commands
+
+        private void OnCreateNewPlyslistCommand()
+        {
+
+        }
+        private bool CanCreateNewPlaylistCommand()
+        {
+            return true;
+        }
 
         #endregion
 
