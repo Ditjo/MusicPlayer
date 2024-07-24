@@ -5,6 +5,7 @@
                     xmlns:FrontPage="clr-namespace:MusicPlayer.UI.Views.FrontPage"
                     xmlns:Options="clr-namespace:MusicPlayer.UI.Views.Options"
                     xmlns:SongControls="clr-namespace:MusicPlayer.UI.Views.SongControls"
+                    xmlns:NewPlaylist="clr-namespace:MusicPlayer.UI.Views.NewPlaylist"
                     >
     <DataTemplate DataType="{x:Type Playlists:PlayListViewModel}">
         <Playlists:PlaylistView/>
@@ -20,5 +21,8 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type SongControls:SongControlsViewModel}">
         <SongControls:SongControlsView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type NewPlaylist:NewPlaylistViewModel}">
+        <NewPlaylist:NewPlaylistView/>
     </DataTemplate>
 </ResourceDictionary>
