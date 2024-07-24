@@ -15,11 +15,11 @@
             <Button Content="Create Playlist" Command="{Binding CreateNewPlaylistCommand}"
                     />
         </DockPanel>
-        <Border Grid.Row="1">
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
             <ItemsControl ItemsSource="{Binding Playlists}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border>
+                        <Border BorderBrush="Black" BorderThickness="1">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
