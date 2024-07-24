@@ -13,6 +13,7 @@ using System.Windows.Input;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using MusicPlayer.Data.Models;
+using MusicPlayer.Services.Helpers;
 
 namespace MusicPlayer.UI.Views.Playlists
 {
@@ -26,7 +27,7 @@ namespace MusicPlayer.UI.Views.Playlists
         {
             _listOfplaylists = playlists;
 
-            CreateNewPlaylistCommand = new RelayCommand(OnCreateNewPlyslistCommand, CanCreateNewPlaylistCommand);
+            CreateNewPlaylistCommand = new RelayCommand<object>(OnCreateNewPlaylistCommand, CanCreateNewPlaylistCommand);
 
             InitPlaylists();
         }
@@ -38,11 +39,14 @@ namespace MusicPlayer.UI.Views.Playlists
 
         #region Commands
 
-        private void OnCreateNewPlyslistCommand()
+        private void OnCreateNewPlaylistCommand(object obj)
         {
-
+            if(obj == null) return;
+            PlayList playList = new PlayList(obj.ToString());
+            Playlists.PlayLists.Add(playList);
+            FileHandler.SaveToJSON<ListOfPlayLists>(Playlists, "playlists.json");
         }
-        private bool CanCreateNewPlaylistCommand()
+        private bool CanCreateNewPlaylistCommand(object obj)
         {
             return true;
         }
