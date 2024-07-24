@@ -41,10 +41,12 @@ namespace MusicPlayer.UI.Views.Playlists
 
         private void OnCreateNewPlaylistCommand(object obj)
         {
-            if(obj == null) return;
-            PlayList playList = new PlayList(obj.ToString());
-            Playlists.PlayLists.Add(playList);
-            FileHandler.SaveToJSON<ListOfPlayLists>(Playlists, "playlists.json");
+            OnRequestForNavigation("dialog_newplaylist", null);
+
+            //if (obj == null) return;
+            //PlayList playList = new PlayList(obj.ToString());
+            //Playlists.PlayLists.Add(playList);
+            //FileHandler.SaveToJSON<ListOfPlayLists>(Playlists, "playlists.json");
         }
         private bool CanCreateNewPlaylistCommand(object obj)
         {

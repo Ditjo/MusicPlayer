@@ -12,7 +12,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
-            <Button Content="Create Playlist" Click="New_Playlist_Click"
+            <Button Content="Create Playlist" Command="{Binding CreateNewPlaylistCommand}"
                     />
         </DockPanel>
         <Border Grid.Row="1">

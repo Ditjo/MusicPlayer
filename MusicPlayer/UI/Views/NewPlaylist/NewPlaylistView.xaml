@@ -13,12 +13,16 @@
                 <TextBox Text="{Binding Name}"/>
 
             </StackPanel>
-            <Button Content="Create"
+            <!--<Button Content="Create"
                     Margin="10"
                     Command="{Binding DataContext.SelectedViewModel.CreateNewPlaylistCommand,
                 RelativeSource={RelativeSource 
                 AncestorType={x:Type Window}
                 }}"
+                    CommandParameter="{Binding Name}"/>-->
+            <Button Content="Create"
+                    Margin="10"
+                    Command="{Binding CreateNewPlaylistCommand}"
                     CommandParameter="{Binding Name}"/>
         </StackPanel>
     </Grid>

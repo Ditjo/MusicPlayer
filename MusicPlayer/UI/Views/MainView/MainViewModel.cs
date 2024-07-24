@@ -4,7 +4,9 @@ using MusicPlayer.Services.Command;
 using MusicPlayer.Services.Helpers;
 using MusicPlayer.Services.Navigation;
 using MusicPlayer.UI.Base;
+using MusicPlayer.UI.Common.Dialog;
 using MusicPlayer.UI.Views.FrontPage;
+using MusicPlayer.UI.Views.NewPlaylist;
 using MusicPlayer.UI.Views.Options;
 using MusicPlayer.UI.Views.Playlists;
 using MusicPlayer.UI.Views.SongControls;
@@ -15,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,6 +33,7 @@ namespace MusicPlayer.UI.Views.MainView
         private static string staticPath = "";
         private MusicPlayerState _state;
         private ListOfPlayLists _playlists;
+        private DialogWindow _dialogWindow;
         FileWorker fileWorker;
 
         public ICommand NavigationCommand { get; set; }
@@ -54,7 +58,7 @@ namespace MusicPlayer.UI.Views.MainView
             SongControls = new SongControlsViewModel(_state);
 
             //Sets Starting Page
-            RequestForNavigation("Home");
+            RequestForNavigation("View_Home");
         }
 
         public void LoadData()
@@ -65,40 +69,64 @@ namespace MusicPlayer.UI.Views.MainView
         internal void RequestForNavigation(string obj, object? entity = null)
         {
             //Used To Also Close Dialogs
+            if (_dialogWindow != null)
+            {
+                _dialogWindow.Close();
+            }
             Navigation(obj, entity);
         }
 
         internal void Navigation(string obj, object? entity = null)
         {
             ViewModelBase viewModel;
-            switch (obj)
+            var navi = obj.ToLower().Split("_");
+            if (navi[0] == "view")
             {
-                case "Home":
-                    viewModel = new FrontPageViewModel();
-                    viewModel.RequestForNavigationEvent += RequestForNavigation;
-                    viewModel.Header = "Home";
-                    SelectedViewModel = viewModel;
-                    break;
-                case "Playlist":
-                    viewModel = new PlayListViewModel(_playlists);
-                    viewModel.RequestForNavigationEvent += RequestForNavigation;
-                    viewModel.Header = "Playlists";
-                    SelectedViewModel = viewModel;
-                    break;
-                case "Songs":
-                    viewModel = new SongViewModel(FullSongList);
-                    viewModel.RequestForNavigationEvent += RequestForNavigation;
-                    viewModel.Header = "Songs";
-                    SelectedViewModel = viewModel;
-                    break;
-                case "Options":
-                    viewModel = new OptionsViewModel();
-                    viewModel.RequestForNavigationEvent += RequestForNavigation;
-                    viewModel.Header = "Options";
-                    SelectedViewModel = viewModel;
-                    break;
-                default: throw new ArgumentException();
 
+                switch (navi[1])
+                {
+                    case "home":
+                        viewModel = new FrontPageViewModel();
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        viewModel.Header = "Home";
+                        SelectedViewModel = viewModel;
+                        break;
+                    case "playlist":
+                        viewModel = new PlayListViewModel(_playlists);
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        viewModel.Header = "Playlists";
+                        SelectedViewModel = viewModel;
+                        break;
+                    case "songs":
+                        viewModel = new SongViewModel(FullSongList);
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        viewModel.Header = "Songs";
+                        SelectedViewModel = viewModel;
+                        break;
+                    case "options":
+                        viewModel = new OptionsViewModel();
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        viewModel.Header = "Options";
+                        SelectedViewModel = viewModel;
+                        break;
+                    default: throw new ArgumentException();
+
+                }
+            }
+            else if (navi[0] == "dialog")
+            {
+                switch (navi[1])
+                {
+                    case "newplaylist":
+                        _dialogWindow = new DialogWindow();
+                        _dialogWindow.Title = "New Playlist";
+                        viewModel = new NewPlaylistViewModel(_playlists);
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        _dialogWindow.DialogContent.Content = viewModel;
+                        _dialogWindow.ShowDialog();
+                        break;
+                    default : throw new ArgumentException();
+                }
             }
         }
 

@@ -23,17 +23,17 @@
                             Width="60" 
                             Content="Home"
                             Command="{Binding NavigationCommand}"
-                            CommandParameter="Home"/>
+                            CommandParameter="View_Home"/>
                 <Button Height="60" 
                             Width="60" 
                             Content="Playlists"
                             Command="{Binding NavigationCommand}"
-                            CommandParameter="Playlist"/>
+                            CommandParameter="View_Playlist"/>
                 <Button Height="60" 
                             Width="60" 
                             Content="Songs"
                         Command="{Binding NavigationCommand}"
-                        CommandParameter="Songs"
+                        CommandParameter="View_Songs"
                             />
                 <Button Height="60" 
                             Width="60" 
@@ -45,7 +45,7 @@
                             Width="60" 
                             Content="Config"
                             Command="{Binding NavigationCommand}"
-                            CommandParameter="Options"/>
+                            CommandParameter="View_Options"/>
             </StackPanel>
         </Grid>
 
