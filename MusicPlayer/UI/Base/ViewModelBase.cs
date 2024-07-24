@@ -25,6 +25,11 @@ namespace MusicPlayer.UI.Base
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        protected virtual void OnRequestForNavigation(string request, object? obj)
+        {
+            RequestForNavigationEvent?.Invoke(request, obj);
+        }
+
         protected void SaveStateOfMusicPlayer(MusicPlayerState state)
         {
             FileHandler.SaveToJSON<MusicPlayerState>(state, statePath);
