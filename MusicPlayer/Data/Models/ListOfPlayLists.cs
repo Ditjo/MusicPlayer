@@ -8,6 +8,10 @@ namespace MusicPlayer.Data.Models
 {
     public class ListOfPlayLists
     {
+        public ListOfPlayLists()
+        {
+            PlayLists = new();
+        }
         public List<PlayList> PlayLists { get; set; }
     }
 }
