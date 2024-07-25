@@ -23,12 +23,14 @@ namespace MusicPlayer.UI.Views.Playlists
         private ListOfPlayLists _listOfplaylists;
 
         public ICommand CreateNewPlaylistCommand { get; set; }
+        public ICommand DeletePlaylistCommand { get; set; }
 
         public PlayListViewModel(ListOfPlayLists playlists)
         {
             _listOfplaylists = playlists;
 
             CreateNewPlaylistCommand = new RelayCommand<object>(OnCreateNewPlaylistCommand, CanCreateNewPlaylistCommand);
+            DeletePlaylistCommand = new RelayCommand<object>(OnDeletePlaylistCommand, CanDeletePlaylistCommand);
 
             InitPlaylists();
         }
@@ -43,13 +45,19 @@ namespace MusicPlayer.UI.Views.Playlists
         private void OnCreateNewPlaylistCommand(object obj)
         {
             OnRequestForNavigation("dialog_newplaylist", null);
-
-            //if (obj == null) return;
-            //PlayList playList = new PlayList(obj.ToString());
-            //Playlists.PlayLists.Add(playList);
-            //FileHandler.SaveToJSON<ListOfPlayLists>(Playlists, "playlists.json");
         }
         private bool CanCreateNewPlaylistCommand(object obj)
+        {
+            return true;
+        }
+
+        private void OnDeletePlaylistCommand(object obj)
+        {
+            Playlists.Remove(Playlists.Where(x => x.Title == obj.ToString()).First());
+            _listOfplaylists.PlayLists = Playlists.ToList();
+            FileHandler.SaveToJSON<ListOfPlayLists>(_listOfplaylists, "playlists.json");
+        }
+        private bool CanDeletePlaylistCommand(object obj)
         {
             return true;
         }
@@ -74,6 +82,24 @@ namespace MusicPlayer.UI.Views.Playlists
                 }
             }
         }
+
+        //private PlayList _selectedPlaylist;
+
+        //public PlayList SelectedPlaylist
+        //{
+        //    get 
+        //    {
+        //        return _selectedPlaylist; 
+        //    }
+        //    set 
+        //    {
+        //        if (_selectedPlaylist != value)
+        //        {
+        //            _selectedPlaylist = value;
+        //            OnPropertyChanged();
+        //        }
+        //    }
+        //}
 
 
         #endregion

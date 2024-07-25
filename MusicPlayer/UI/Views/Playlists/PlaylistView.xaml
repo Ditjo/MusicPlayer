@@ -40,7 +40,13 @@
                                                 <MenuItem Header="Play Now"/>
                                                 <MenuItem Header="Shuffle"/>
                                                 <MenuItem Header="Queue up"/>
-                                                <MenuItem Header="Delete"/>
+                                                <MenuItem Header="Delete" 
+                                                          Command="{Binding DataContext.SelectedViewModel.DeletePlaylistCommand, 
+                                                    RelativeSource={RelativeSource 
+                                                    AncestorType=Window,
+                                                    AncestorLevel=1,
+                                                    Mode=FindAncestor}}" 
+                                                          CommandParameter="{Binding Title}"/>
                                             </MenuItem>
                                         </Menu>
                                     </StackPanel>
