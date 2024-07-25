@@ -14,6 +14,7 @@ using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using MusicPlayer.Data.Models;
 using MusicPlayer.Services.Helpers;
+using System.Collections.ObjectModel;
 
 namespace MusicPlayer.UI.Views.Playlists
 {
@@ -34,7 +35,7 @@ namespace MusicPlayer.UI.Views.Playlists
 
         private void InitPlaylists()
         {
-            Playlists = _listOfplaylists;
+            Playlists = _listOfplaylists.PlayLists.ToObservableCollection();
         }
 
         #region Commands
@@ -57,8 +58,8 @@ namespace MusicPlayer.UI.Views.Playlists
 
         #region Properties
 
-        private ListOfPlayLists _playlists;
-        public ListOfPlayLists Playlists
+        private ObservableCollection<PlayList> _playlists;
+        public ObservableCollection<PlayList> Playlists
         {
             get 
             {
