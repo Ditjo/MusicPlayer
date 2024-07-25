@@ -34,8 +34,8 @@ namespace MusicPlayer.UI.Views.NewPlaylist
         }
         private bool CanCreateNewPlaylistCommand(object obj)
         {
-            //return !string.IsNullOrWhiteSpace(Name);
-            return true;
+            return !string.IsNullOrWhiteSpace(Name) 
+                && !(_listOfplaylists.PlayLists.Where(x => x.Title == Name).Any());
         }
 
         private string? _name;

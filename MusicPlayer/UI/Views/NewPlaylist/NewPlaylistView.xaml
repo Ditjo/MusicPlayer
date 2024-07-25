@@ -10,7 +10,7 @@
         <StackPanel>
             <StackPanel Margin="10">
                 <TextBlock Text="New Playlist Name:"/>
-                <TextBox Text="{Binding Name}"/>
+                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             </StackPanel>
             <!--<Button Content="Create"
