@@ -23,6 +23,9 @@ namespace MusicPlayer.UI.Views.Playlists
         private ListOfPlayLists _listOfplaylists;
 
         public ICommand CreateNewPlaylistCommand { get; set; }
+        public ICommand PlayPlaylistCommand { get; set; }
+        public ICommand ShufflePlaylistCommand { get; set; }
+        public ICommand QueuePlaylistCommand { get; set; }
         public ICommand DeletePlaylistCommand { get; set; }
 
         public PlayListViewModel(ListOfPlayLists playlists)
@@ -30,17 +33,50 @@ namespace MusicPlayer.UI.Views.Playlists
             _listOfplaylists = playlists;
 
             CreateNewPlaylistCommand = new RelayCommand<object>(OnCreateNewPlaylistCommand, CanCreateNewPlaylistCommand);
+            DeletePlaylistCommand = new RelayCommand<object>(OnPlayPlaylistCommand, CanPlayPlaylistCommand);
+            DeletePlaylistCommand = new RelayCommand<object>(OnShufflePlaylistCommand, CanShufflePlaylistCommand);
+            DeletePlaylistCommand = new RelayCommand<object>(OnQueuePlaylistCommand, CanQueuePlaylistCommand);
             DeletePlaylistCommand = new RelayCommand<object>(OnDeletePlaylistCommand, CanDeletePlaylistCommand);
 
             InitPlaylists();
         }
-
         private void InitPlaylists()
         {
             Playlists = _listOfplaylists.PlayLists.ToObservableCollection();
         }
 
         #region Commands
+
+        private bool CanQueuePlaylistCommand(object arg)
+        {
+            return true;
+        }
+
+        private void OnQueuePlaylistCommand(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanShufflePlaylistCommand(object arg)
+        {
+            return true;
+        }
+
+        private void OnShufflePlaylistCommand(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanPlayPlaylistCommand(object arg)
+        {
+            return true;
+        }
+
+        private void OnPlayPlaylistCommand(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private void OnCreateNewPlaylistCommand(object obj)
         {
