@@ -22,6 +22,8 @@ namespace MusicPlayer.UI.Views.Playlists
     {
         private ListOfPlayLists _listOfplaylists;
 
+        public event EventHandler<PlayList> PlayPlaylistsEvent;
+
         public ICommand CreateNewPlaylistCommand { get; set; }
         public ICommand PlayPlaylistCommand { get; set; }
         public ICommand ShufflePlaylistCommand { get; set; }
@@ -45,6 +47,11 @@ namespace MusicPlayer.UI.Views.Playlists
             Playlists = _listOfplaylists.PlayLists.ToObservableCollection();
         }
 
+        //protected virtual void OnRequestForPlayPlaylist(PlayList playlist)
+        //{
+        //    PlayPlaylistsEvent?.Invoke(this, playlist);
+        //}
+
         #region Commands
         private void OnCreateNewPlaylistCommand(object obj)
         {
@@ -65,7 +72,10 @@ namespace MusicPlayer.UI.Views.Playlists
             var playlists = Playlists.Where(x => x.Title == obj.ToString());
             if (!playlists.Any()) return;
             var p = playlists.FirstOrDefault();
-
+            if (p != null)
+            {
+                OnRequestForPlayPlaylist(p);
+            }
         }
 
         private bool CanShufflePlaylistCommand(object arg)

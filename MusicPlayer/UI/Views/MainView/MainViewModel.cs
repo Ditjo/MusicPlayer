@@ -94,6 +94,7 @@ namespace MusicPlayer.UI.Views.MainView
                     case "playlist":
                         viewModel = new PlayListViewModel(_playlists);
                         viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        viewModel.PlayPlaylistsEvent += RequestForPlayPlaylist;
                         viewModel.Header = "Playlists";
                         SelectedViewModel = viewModel;
                         break;
@@ -130,6 +131,12 @@ namespace MusicPlayer.UI.Views.MainView
             }
         }
 
+        internal void RequestForPlayPlaylist(object? sender, PlayList playlist)
+        {
+            Debug.WriteLine("Im here");
+            OnAddPlaylistToPlayNowCommand(playlist);
+        }
+
         #region Commands
         private void OnNavigateCommand(object obj)
         {
@@ -143,18 +150,25 @@ namespace MusicPlayer.UI.Views.MainView
                 SongControls.AddToQueue(SelectedSong);
             }
         }
-        private void OnAddPlayListToQueueCommand()
-        {
-            if (SelectedSong is not null)
-            {
-                //SongControls.AddPlayListToQueue(SelectedSong);
-            }
-        }
         private void OnAddSongToPlayNowCommand()
         {
             if (SelectedSong is not null)
             {
                 SongControls.PlayNow(SelectedSong);
+            }
+        }
+        private void OnAddPlayListToQueueCommand(PlayList playlist)
+        {
+            if (playlist is not null && playlist.Songs.Count != 0)
+            {
+                //SongControls.AddPlayListToQueue(SelectedSong);
+            }
+        }
+        private void OnAddPlaylistToPlayNowCommand(PlayList playlist)
+        {
+            if (playlist is not null && playlist.Songs.Count != 0)
+            {
+                SongControls.PlayNow(playlist.Songs);
             }
         }
 

@@ -20,6 +20,8 @@ namespace MusicPlayer.UI.Base
 
         public event Action<string, object>? RequestForNavigationEvent;
 
+        public event EventHandler<PlayList>? PlayPlaylistsEvent;
+
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -28,6 +30,11 @@ namespace MusicPlayer.UI.Base
         protected virtual void OnRequestForNavigation(string request, object? obj)
         {
             RequestForNavigationEvent?.Invoke(request, obj);
+        }
+
+        protected virtual void OnRequestForPlayPlaylist(PlayList playlist)
+        {
+            PlayPlaylistsEvent?.Invoke(this, playlist);
         }
 
         protected void SaveStateOfMusicPlayer(MusicPlayerState state)
