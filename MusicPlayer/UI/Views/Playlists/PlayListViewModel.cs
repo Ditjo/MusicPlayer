@@ -33,9 +33,9 @@ namespace MusicPlayer.UI.Views.Playlists
             _listOfplaylists = playlists;
 
             CreateNewPlaylistCommand = new RelayCommand<object>(OnCreateNewPlaylistCommand, CanCreateNewPlaylistCommand);
-            DeletePlaylistCommand = new RelayCommand<object>(OnPlayPlaylistCommand, CanPlayPlaylistCommand);
-            DeletePlaylistCommand = new RelayCommand<object>(OnShufflePlaylistCommand, CanShufflePlaylistCommand);
-            DeletePlaylistCommand = new RelayCommand<object>(OnQueuePlaylistCommand, CanQueuePlaylistCommand);
+            PlayPlaylistCommand = new RelayCommand<object>(OnPlayPlaylistCommand, CanPlayPlaylistCommand);
+            ShufflePlaylistCommand = new RelayCommand<object>(OnShufflePlaylistCommand, CanShufflePlaylistCommand);
+            QueuePlaylistCommand = new RelayCommand<object>(OnQueuePlaylistCommand, CanQueuePlaylistCommand);
             DeletePlaylistCommand = new RelayCommand<object>(OnDeletePlaylistCommand, CanDeletePlaylistCommand);
 
             InitPlaylists();
@@ -46,15 +46,26 @@ namespace MusicPlayer.UI.Views.Playlists
         }
 
         #region Commands
-
-        private bool CanQueuePlaylistCommand(object arg)
+        private void OnCreateNewPlaylistCommand(object obj)
+        {
+            OnRequestForNavigation("dialog_newplaylist", null);
+        }
+        private bool CanCreateNewPlaylistCommand(object obj)
+        {
+            return true;
+        }
+        private bool CanPlayPlaylistCommand(object arg)
         {
             return true;
         }
 
-        private void OnQueuePlaylistCommand(object obj)
+        private void OnPlayPlaylistCommand(object obj)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Playing Playlist");
+            var playlists = Playlists.Where(x => x.Title == obj.ToString());
+            if (!playlists.Any()) return;
+            var p = playlists.FirstOrDefault();
+
         }
 
         private bool CanShufflePlaylistCommand(object arg)
@@ -64,27 +75,17 @@ namespace MusicPlayer.UI.Views.Playlists
 
         private void OnShufflePlaylistCommand(object obj)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Shuffle Playlist");
         }
 
-        private bool CanPlayPlaylistCommand(object arg)
+        private bool CanQueuePlaylistCommand(object arg)
         {
             return true;
         }
 
-        private void OnPlayPlaylistCommand(object obj)
+        private void OnQueuePlaylistCommand(object obj)
         {
-            throw new NotImplementedException();
-        }
-
-
-        private void OnCreateNewPlaylistCommand(object obj)
-        {
-            OnRequestForNavigation("dialog_newplaylist", null);
-        }
-        private bool CanCreateNewPlaylistCommand(object obj)
-        {
-            return true;
+            Debug.WriteLine("Queue Playlist");
         }
 
         private void OnDeletePlaylistCommand(object obj)

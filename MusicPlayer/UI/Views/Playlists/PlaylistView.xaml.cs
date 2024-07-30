@@ -27,15 +27,5 @@ namespace MusicPlayer.UI.Views.Playlists
         {
             InitializeComponent();
         }
-
-        //private void NewPlaylistDialogOpen(object sender, RoutedEventArgs e)
-        //{
-        //    DialogWindow dialogWindow = new DialogWindow();
-        //    dialogWindow.Title = "New Playlist";
-        //    dialogWindow.DialogContent.Content = new NewPlaylistViewModel();
-        //    dialogWindow.Owner = Application.Current.MainWindow;
-        //    dialogWindow.DataContext = Application.Current.MainWindow.DataContext;
-        //    dialogWindow.ShowDialog();
-        //}
     }
 }

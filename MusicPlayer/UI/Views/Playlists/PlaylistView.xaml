@@ -37,15 +37,33 @@
                                         <TextBlock Text="{Binding Songs.Count}" Margin="5"/>
                                         <Menu>
                                             <MenuItem Header="...">
-                                                <MenuItem Header="Play Now"/>
-                                                <MenuItem Header="Shuffle"/>
-                                                <MenuItem Header="Queue up"/>
+                                                <MenuItem Header="Play" 
+                                                          Command="{Binding DataContext.SelectedViewModel.PlayPlaylistCommand, 
+                                                            RelativeSource={RelativeSource 
+                                                            AncestorType=Window,
+                                                            AncestorLevel=1,
+                                                            Mode=FindAncestor}}" 
+                                                          CommandParameter="{Binding Title}"/>
+                                                <MenuItem Header="Shuffle" 
+                                                          Command="{Binding DataContext.SelectedViewModel.ShufflePlaylistCommand, 
+                                                            RelativeSource={RelativeSource 
+                                                            AncestorType=Window,
+                                                            AncestorLevel=1,
+                                                            Mode=FindAncestor}}" 
+                                                          CommandParameter="{Binding Title}"/>
+                                                <MenuItem Header="Queue" 
+                                                          Command="{Binding DataContext.SelectedViewModel.QueuePlaylistCommand, 
+                                                            RelativeSource={RelativeSource 
+                                                            AncestorType=Window,
+                                                            AncestorLevel=1,
+                                                            Mode=FindAncestor}}" 
+                                                          CommandParameter="{Binding Title}"/>
                                                 <MenuItem Header="Delete" 
                                                           Command="{Binding DataContext.SelectedViewModel.DeletePlaylistCommand, 
-                                                    RelativeSource={RelativeSource 
-                                                    AncestorType=Window,
-                                                    AncestorLevel=1,
-                                                    Mode=FindAncestor}}" 
+                                                            RelativeSource={RelativeSource 
+                                                            AncestorType=Window,
+                                                            AncestorLevel=1,
+                                                            Mode=FindAncestor}}" 
                                                           CommandParameter="{Binding Title}"/>
                                             </MenuItem>
                                         </Menu>
