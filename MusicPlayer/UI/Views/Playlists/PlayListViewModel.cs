@@ -20,7 +20,7 @@ namespace MusicPlayer.UI.Views.Playlists
 {
     public class PlayListViewModel : ViewModelBase
     {
-        private ListOfPlayLists _listOfplaylists;
+        private List<PlayList> _fullPlaylists;
 
         public event EventHandler<PlayList> PlayPlaylistsEvent;
 
@@ -30,9 +30,9 @@ namespace MusicPlayer.UI.Views.Playlists
         public ICommand QueuePlaylistCommand { get; set; }
         public ICommand DeletePlaylistCommand { get; set; }
 
-        public PlayListViewModel(ListOfPlayLists playlists)
+        public PlayListViewModel(List<PlayList> playlists)
         {
-            _listOfplaylists = playlists;
+            _fullPlaylists = playlists;
 
             CreateNewPlaylistCommand = new RelayCommand<object>(OnCreateNewPlaylistCommand, CanCreateNewPlaylistCommand);
             PlayPlaylistCommand = new RelayCommand<object>(OnPlayPlaylistCommand, CanPlayPlaylistCommand);
@@ -44,7 +44,7 @@ namespace MusicPlayer.UI.Views.Playlists
         }
         private void InitPlaylists()
         {
-            Playlists = _listOfplaylists.PlayLists.ToObservableCollection();
+            Playlists = _fullPlaylists.ToObservableCollection();
         }
 
         //protected virtual void OnRequestForPlayPlaylist(PlayList playlist)
@@ -101,8 +101,9 @@ namespace MusicPlayer.UI.Views.Playlists
         private void OnDeletePlaylistCommand(object obj)
         {
             Playlists.Remove(Playlists.Where(x => x.Title == obj.ToString()).First());
-            _listOfplaylists.PlayLists = Playlists.ToList();
-            FileHandler.SaveToJSON<ListOfPlayLists>(_listOfplaylists, "playlists.json");
+            _fullPlaylists = Playlists.ToList();
+            ListOfPlayLists list = new ListOfPlayLists() { PlayLists = _fullPlaylists };
+            FileHandler.SaveToJSON<ListOfPlayLists>(list, "playlists.json");
         }
         private bool CanDeletePlaylistCommand(object obj)
         {

@@ -32,7 +32,7 @@ namespace MusicPlayer.UI.Views.MainView
     {
         private static string staticPath = "";
         private MusicPlayerState _state;
-        private ListOfPlayLists _playlists;
+        private List<PlayList> _playlists;
         private DialogWindow _dialogWindow;
         FileWorker fileWorker;
 
@@ -40,7 +40,7 @@ namespace MusicPlayer.UI.Views.MainView
         public ICommand AddSongToQueueCommand { get; set; }
         public ICommand AddSongToPlayNowCommand { get; set; }
 
-        public MainViewModel(MusicPlayerState state, ListOfPlayLists playlists)
+        public MainViewModel(MusicPlayerState state, List<PlayList> playlists)
         {
             _state = state;
             _playlists = playlists;
@@ -79,6 +79,7 @@ namespace MusicPlayer.UI.Views.MainView
         internal void Navigation(string obj, object? entity = null)
         {
             ViewModelBase viewModel;
+            SelectedViewModel = null;
             var navi = obj.ToLower().Split("_");
             if (navi[0] == "view")
             {
@@ -99,7 +100,7 @@ namespace MusicPlayer.UI.Views.MainView
                         SelectedViewModel = viewModel;
                         break;
                     case "songs":
-                        viewModel = new SongViewModel(FullSongList);
+                        viewModel = new SongViewModel(FullSongList, _playlists);
                         viewModel.RequestForNavigationEvent += RequestForNavigation;
                         viewModel.Header = "Songs";
                         SelectedViewModel = viewModel;

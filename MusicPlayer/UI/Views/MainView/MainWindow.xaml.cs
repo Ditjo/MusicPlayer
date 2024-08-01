@@ -35,7 +35,7 @@ namespace MusicPlayer
         {
             InitializeComponent();
             OnStartUp();
-            _viewModel = new MainViewModel(_state, _playlists);
+            _viewModel = new MainViewModel(_state, _playlists.PlayLists);
             Closing += OnClosingEvent;
             DataContext = _viewModel;
         }

@@ -24,6 +24,9 @@
                     Margin="10"
                     Command="{Binding CreateNewPlaylistCommand}"
                     CommandParameter="{Binding Name}"/>
+            <Button Content="Cancel"
+                    Margin="10"
+                    Command="{Binding CancelCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>
