@@ -38,32 +38,24 @@
                                         <Menu>
                                             <MenuItem Header="...">
                                                 <MenuItem Header="Play" 
-                                                          Command="{Binding DataContext.SelectedViewModel.PlayPlaylistCommand, 
+                                                          Command="{Binding DataContext.PlayPlaylistCommand, 
                                                             RelativeSource={RelativeSource 
-                                                            AncestorType=Window,
-                                                            AncestorLevel=1,
-                                                            Mode=FindAncestor}}" 
+                                                            AncestorType={x:Type local:PlaylistView}}}" 
                                                           CommandParameter="{Binding Title}"/>
                                                 <MenuItem Header="Shuffle" 
-                                                          Command="{Binding DataContext.SelectedViewModel.ShufflePlaylistCommand, 
+                                                          Command="{Binding DataContext.ShufflePlaylistCommand, 
                                                             RelativeSource={RelativeSource 
-                                                            AncestorType=Window,
-                                                            AncestorLevel=1,
-                                                            Mode=FindAncestor}}" 
+                                                            AncestorType={x:Type local:PlaylistView}}}" 
                                                           CommandParameter="{Binding Title}"/>
                                                 <MenuItem Header="Queue" 
-                                                          Command="{Binding DataContext.SelectedViewModel.QueuePlaylistCommand, 
+                                                          Command="{Binding DataContext.QueuePlaylistCommand, 
                                                             RelativeSource={RelativeSource 
-                                                            AncestorType=Window,
-                                                            AncestorLevel=1,
-                                                            Mode=FindAncestor}}" 
+                                                            AncestorType={x:Type local:PlaylistView}}}" 
                                                           CommandParameter="{Binding Title}"/>
                                                 <MenuItem Header="Delete" 
-                                                          Command="{Binding DataContext.SelectedViewModel.DeletePlaylistCommand, 
+                                                          Command="{Binding DataContext.DeletePlaylistCommand, 
                                                             RelativeSource={RelativeSource 
-                                                            AncestorType=Window,
-                                                            AncestorLevel=1,
-                                                            Mode=FindAncestor}}" 
+                                                            AncestorType={x:Type local:PlaylistView}}}" 
                                                           CommandParameter="{Binding Title}"/>
                                             </MenuItem>
                                         </Menu>
@@ -75,40 +67,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </Border>
-        <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-            <ItemsControl ItemsSource="{Binding Playlists, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          >
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Black" 
-                                BorderThickness="1"
-                                Height="100"
-                                Width="100"
-                                >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="1">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Title}"/>
-                                        <Menu>
-                                            <MenuItem Header="...">
-                                                <MenuItem Header="Play Now"/>
-                                                <MenuItem Header="Shuffle"/>
-                                                <MenuItem Header="Queue up"/>
-                                                <MenuItem Header="Delete"/>
-                                            </MenuItem>
-                                        </Menu>
-                                    </StackPanel>
-                                </Grid>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Border>-->
-
     </Grid>
 </UserControl>
