@@ -2,4 +2,5 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:MusicPlayer.UI.Converters">
     <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter" Format="TotalSeconds"/>
+    <converters:IsSongInPlaylistConverter x:Key="IsSongInPlaylistConverter"/>
 </ResourceDictionary>
