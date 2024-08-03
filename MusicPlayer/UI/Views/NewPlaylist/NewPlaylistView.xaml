@@ -22,7 +22,7 @@
                     CommandParameter="{Binding Name}"/>-->
             <Button Content="Create"
                     Margin="10"
-                    Command="{Binding CreateNewPlaylistCommand}"
+                    Command="{Binding ConfirmCommand}"
                     CommandParameter="{Binding Name}"/>
             <Button Content="Cancel"
                     Margin="10"

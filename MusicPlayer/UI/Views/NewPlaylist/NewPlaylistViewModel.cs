@@ -2,6 +2,7 @@
 using MusicPlayer.Services.Command;
 using MusicPlayer.Services.Helpers;
 using MusicPlayer.UI.Base;
+using MusicPlayer.UI.Common.Dialog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,21 +12,16 @@ using System.Windows.Input;
 
 namespace MusicPlayer.UI.Views.NewPlaylist
 {
-    public class NewPlaylistViewModel : ViewModelBase
+    public class NewPlaylistViewModel : DialogBase
     {
         private List<PlayList> _playlists;
-        public ICommand CreateNewPlaylistCommand { get; set; }
-        public ICommand CancelCommand { get; set; }
 
         public NewPlaylistViewModel(List<PlayList> playlists)
         {
             _playlists = playlists;
-
-            CreateNewPlaylistCommand = new RelayCommand<object>(OnCreateNewPlaylistCommand, CanCreateNewPlaylistCommand);
-            CancelCommand = new RelayCommand<object>(OnCancelCommand);
         }
 
-        private void OnCreateNewPlaylistCommand(object obj)
+        public override void OnConfirmCommand(object obj)
         {
             if (obj == null) return;
             PlayList playList = new PlayList(obj.ToString());
@@ -35,13 +31,13 @@ namespace MusicPlayer.UI.Views.NewPlaylist
 
             OnRequestForNavigation("view_playlist", null);
         }
-        private bool CanCreateNewPlaylistCommand(object obj)
+        public override bool CanConfirmCommand(object obj)
         {
             return !string.IsNullOrWhiteSpace(Name) 
                 && !(_playlists.Where(x => x.Title == Name).Any());
         }
 
-        private void OnCancelCommand(object obj)
+        public override void OnCancelCommand(object obj)
         {
             OnRequestForNavigation("view_playlist", null);
         }
