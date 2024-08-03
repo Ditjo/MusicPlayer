@@ -5,6 +5,7 @@ using MusicPlayer.Services.Helpers;
 using MusicPlayer.Services.Navigation;
 using MusicPlayer.UI.Base;
 using MusicPlayer.UI.Common.Dialog;
+using MusicPlayer.UI.Views.AddSongToPlaylist;
 using MusicPlayer.UI.Views.FrontPage;
 using MusicPlayer.UI.Views.NewPlaylist;
 using MusicPlayer.UI.Views.Options;
@@ -79,7 +80,7 @@ namespace MusicPlayer.UI.Views.MainView
         internal void Navigation(string obj, object? entity = null)
         {
             ViewModelBase viewModel;
-            SelectedViewModel = null;
+            //SelectedViewModel = null;
             var navi = obj.ToLower().Split("_");
             if (navi[0] == "view")
             {
@@ -123,6 +124,14 @@ namespace MusicPlayer.UI.Views.MainView
                         _dialogWindow = new DialogWindow();
                         _dialogWindow.Title = "New Playlist";
                         viewModel = new NewPlaylistViewModel(_playlists);
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        _dialogWindow.DialogContent.Content = viewModel;
+                        _dialogWindow.ShowDialog();
+                        break;
+                    case "addsongtoplaylist":
+                        _dialogWindow = new DialogWindow();
+                        _dialogWindow.Title = "Add To Playlist";
+                        viewModel = new AddSongToPlaylistViewModel(_playlists);
                         viewModel.RequestForNavigationEvent += RequestForNavigation;
                         _dialogWindow.DialogContent.Content = viewModel;
                         _dialogWindow.ShowDialog();

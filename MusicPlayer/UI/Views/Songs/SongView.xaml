@@ -43,8 +43,12 @@
                                         RelativeSource={RelativeSource 
                                         Mode=FindAncestor, 
                                         AncestorType=Window}}"/>
-                                    <MenuItem Header="Add to Playlist"/>
-                                    <MenuItem Header="Edit Songdata"/>
+                                    <MenuItem Header="Add to Playlist" Command="{Binding DataContext.NavigationCommand,                 
+                                        RelativeSource={RelativeSource 
+                                        Mode=FindAncestor, 
+                                        AncestorType=Window}}"
+                                              CommandParameter="dialog_addsongtoplaylist"/>
+                                    <!--<MenuItem Header="Edit Songdata"/>-->
                                 </MenuItem>
                             </Menu>
                         </DataTemplate>
