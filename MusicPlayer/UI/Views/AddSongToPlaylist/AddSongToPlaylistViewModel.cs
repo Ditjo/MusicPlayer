@@ -14,9 +14,12 @@ namespace MusicPlayer.UI.Views.AddSongToPlaylist
 {
     public class AddSongToPlaylistViewModel : DialogBase
     {
-        public AddSongToPlaylistViewModel(List<PlayList> playlists)
+        private readonly string playlistPath = "playlists.json";
+        private readonly Song _selectedSong;
+        public AddSongToPlaylistViewModel(List<PlayList> playlists, Song song)
         {
             Playlists = playlists.ToObservableCollection();
+            _selectedSong = song;
         }
 
         public override bool CanConfirmCommand(object obj)
@@ -26,14 +29,24 @@ namespace MusicPlayer.UI.Views.AddSongToPlaylist
         public override void OnConfirmCommand(object obj)
         {
             Debug.WriteLine("Confirmed");
+            if (SelectedPlaylist == null || Playlists == null) return;
+            var pl = Playlists.First(x => x.Title == SelectedPlaylist.Title);
+            if (pl != null)
+            {
+                pl.Songs.Enqueue(_selectedSong);
+                ListOfPlayLists listOfPlayLists = new ListOfPlayLists() { PlayLists = Playlists.ToList() };
+                FileHandler.SaveToJSON<ListOfPlayLists>(listOfPlayLists, playlistPath);
+
+            }
+            OnCancelCommand(obj);
         }
         public override void OnCancelCommand(object obj)
         {
             OnRequestForNavigation("view_songs", null);
         }
 
-        private ObservableCollection<PlayList> _playlists;
-        public ObservableCollection<PlayList> Playlists
+        private ObservableCollection<PlayList>? _playlists;
+        public ObservableCollection<PlayList>? Playlists
         {
             get 
             {
@@ -49,9 +62,8 @@ namespace MusicPlayer.UI.Views.AddSongToPlaylist
             }
         }
 
-        private PlayList _selectedPlaylist;
-
-        public PlayList SelectedPlaylist
+        private PlayList? _selectedPlaylist;
+        public PlayList? SelectedPlaylist
         {
             get 
             {

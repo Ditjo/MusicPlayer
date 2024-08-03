@@ -131,7 +131,7 @@ namespace MusicPlayer.UI.Views.MainView
                     case "addsongtoplaylist":
                         _dialogWindow = new DialogWindow();
                         _dialogWindow.Title = "Add To Playlist";
-                        viewModel = new AddSongToPlaylistViewModel(_playlists);
+                        viewModel = new AddSongToPlaylistViewModel(_playlists, SelectedSong);
                         viewModel.RequestForNavigationEvent += RequestForNavigation;
                         _dialogWindow.DialogContent.Content = viewModel;
                         _dialogWindow.ShowDialog();
