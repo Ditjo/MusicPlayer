@@ -26,16 +26,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid> <!-- <-Add Binding & Converter-->
-                            <TextBlock Text="{Binding Title}">
-                                <!--<TextBlock.Text>
-                                    <MultiBinding>
-                                        <Binding Path="{Binding Title}"/>
-                                        <Binding Path="{Binding SelectedSong}"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>-->
-                            </TextBlock>
-                        </Grid>
+                        <TextBlock Text="{Binding Title}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

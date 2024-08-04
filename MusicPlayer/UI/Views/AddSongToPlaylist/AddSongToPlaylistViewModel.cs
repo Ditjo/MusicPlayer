@@ -15,7 +15,6 @@ namespace MusicPlayer.UI.Views.AddSongToPlaylist
     public class AddSongToPlaylistViewModel : DialogBase
     {
         private readonly string playlistPath = "playlists.json";
-        //private readonly Song _selectedSong;
         public AddSongToPlaylistViewModel(List<PlayList> playlists, Song song)
         {
             SelectedSong = song;
