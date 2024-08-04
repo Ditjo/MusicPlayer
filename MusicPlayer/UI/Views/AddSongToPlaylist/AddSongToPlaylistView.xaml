@@ -11,14 +11,30 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox Grid.Row="0" 
+        <Label Name="HackLabel"
+               Content="{Binding SelectedSong.SongName}"
+               Grid.Row="0"
+               Visibility="Hidden"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
+            <ListBox 
                      ItemsSource="{ Binding Playlists}"
                      SelectedItem="{Binding SelectedPlaylist}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsEnabled" Value="{Binding Songs, Converter={StaticResource IsSongInPlaylistConverter},ConverterParameter={x:Reference Name=HackLabel}}" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid IsEnabled="True"> <!-- <-Add Binding & Converter-->
-                            <TextBlock Text="{Binding Title}"/>
+                        <Grid> <!-- <-Add Binding & Converter-->
+                            <TextBlock Text="{Binding Title}">
+                                <!--<TextBlock.Text>
+                                    <MultiBinding>
+                                        <Binding Path="{Binding Title}"/>
+                                        <Binding Path="{Binding SelectedSong}"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>-->
+                            </TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

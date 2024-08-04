@@ -15,11 +15,11 @@ namespace MusicPlayer.UI.Views.AddSongToPlaylist
     public class AddSongToPlaylistViewModel : DialogBase
     {
         private readonly string playlistPath = "playlists.json";
-        private readonly Song _selectedSong;
+        //private readonly Song _selectedSong;
         public AddSongToPlaylistViewModel(List<PlayList> playlists, Song song)
         {
+            SelectedSong = song;
             Playlists = playlists.ToObservableCollection();
-            _selectedSong = song;
         }
 
         public override bool CanConfirmCommand(object obj)
@@ -79,6 +79,22 @@ namespace MusicPlayer.UI.Views.AddSongToPlaylist
             }
         }
 
+        private Song? _selectedSong;
+        public Song? SelectedSong
+        {
+            get
+            {
+                return _selectedSong;
+            }
+            set
+            {
+                if (_selectedSong != value)
+                {
+                    _selectedSong = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
     }
 }
