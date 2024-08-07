@@ -10,6 +10,7 @@ using MusicPlayer.UI.Views.FrontPage;
 using MusicPlayer.UI.Views.NewPlaylist;
 using MusicPlayer.UI.Views.Options;
 using MusicPlayer.UI.Views.Playlists;
+using MusicPlayer.UI.Views.PlaylistSongs;
 using MusicPlayer.UI.Views.SongControls;
 using MusicPlayer.UI.Views.Songs;
 using NAudio.Wave;
@@ -102,6 +103,12 @@ namespace MusicPlayer.UI.Views.MainView
                         break;
                     case "songs":
                         viewModel = new SongViewModel(FullSongList, _playlists);
+                        viewModel.RequestForNavigationEvent += RequestForNavigation;
+                        viewModel.Header = "Songs";
+                        SelectedViewModel = viewModel;
+                        break;
+                    case "playlistsongs":
+                        viewModel = new PlayListSongViewModel(_playlists.Where(x => x.Title == entity.ToString()).First());
                         viewModel.RequestForNavigationEvent += RequestForNavigation;
                         viewModel.Header = "Songs";
                         SelectedViewModel = viewModel;

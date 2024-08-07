@@ -29,6 +29,7 @@ namespace MusicPlayer.UI.Views.Playlists
         public ICommand ShufflePlaylistCommand { get; set; }
         public ICommand QueuePlaylistCommand { get; set; }
         public ICommand DeletePlaylistCommand { get; set; }
+        public ICommand ViewPlaylistSongsCommand { get; set; }
 
         public PlayListViewModel(List<PlayList> playlists)
         {
@@ -39,9 +40,11 @@ namespace MusicPlayer.UI.Views.Playlists
             ShufflePlaylistCommand = new RelayCommand<object>(OnShufflePlaylistCommand, CanShufflePlaylistCommand);
             QueuePlaylistCommand = new RelayCommand<object>(OnQueuePlaylistCommand, CanQueuePlaylistCommand);
             DeletePlaylistCommand = new RelayCommand<object>(OnDeletePlaylistCommand, CanDeletePlaylistCommand);
+            ViewPlaylistSongsCommand = new RelayCommand<object>(OnViewPlaylistSongsCommand);
 
             InitPlaylists();
         }
+
         private void InitPlaylists()
         {
             Playlists = _fullPlaylists.ToObservableCollection();
@@ -61,6 +64,14 @@ namespace MusicPlayer.UI.Views.Playlists
         {
             return true;
         }
+
+        private void OnViewPlaylistSongsCommand(object obj)
+        {
+            Debug.WriteLine("Test Command Fired");
+            OnRequestForNavigation("view_playlistsongs", obj);
+        }
+
+
         private bool CanPlayPlaylistCommand(object arg)
         {
             return true;
