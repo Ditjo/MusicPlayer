@@ -144,7 +144,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private bool CanPreviousSongCommand()
         {
-            return true;
+            return PastSongs.Any();
         }
 
         private void OnNextSongCommand()
@@ -155,7 +155,7 @@ namespace MusicPlayer.UI.Views.SongControls
 
         private bool CanNextSongCommand()
         {
-            return true;
+            return SongQueue.Count > 1;
         }
 
         #endregion
@@ -254,6 +254,7 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             SongQueue.Clear();
             PastSongs.Clear();
+            CurrentSong = null;
             SongQueue = AddSongToQueue(SongQueue, song);
             PlayNextSongFromQueue();
         }
@@ -262,7 +263,8 @@ namespace MusicPlayer.UI.Views.SongControls
         {
             SongQueue.Clear();
             PastSongs.Clear();
-            if (songs is null || songs.Any()) return;
+            CurrentSong = null;
+            if (songs is null || !songs.Any()) return;
 
             foreach (Song song in songs)
             {
